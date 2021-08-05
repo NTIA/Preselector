@@ -1,7 +1,7 @@
-from RfPath import RfPath
-from Filter import Filter
-from Amplifier import Amplifier
-from CalSource import CalSource
+from its_preselector.RfPath import RfPath
+from its_preselector.Filter import Filter
+from its_preselector.Amplifier import Amplifier
+from its_preselector.CalSource import CalSource
 import requests
 class Preselector:
 

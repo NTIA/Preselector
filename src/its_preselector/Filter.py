@@ -1,4 +1,4 @@
-from HardwareSpec import HardwareSpec
+from its_preselector.HardwareSpec import HardwareSpec
 class Filter:
 
     def __init__(self):
