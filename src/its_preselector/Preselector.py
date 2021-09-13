@@ -105,16 +105,23 @@ class Preselector:
         requests.get(command)
 
     def set_source_on(self, key):
-        command = self.config['WEB_RELAY']['base_url'] + self.config[key]['on']
-        print(command)
-        requests.get(command)
+        switches =  self.config[key]['on'].split(',')
+        for i in range(len(switches)):
+            command = self.config['WEB_RELAY']['base_url'] + switches[i]
+            print(command)
+            requests.get(command)
+
+
 
     def set_source_off(self, key):
-        command = self.config['WEB_RELAY']['base_url'] + self.config[key]['off']
-        print(command)
-        requests.get(command)
+        switches = self.config[key]['off'].split(',')
+        for i in range(len(switches)):
+            command = self.config['WEB_RELAY']['base_url'] + switches[i]
+            print(command)
+            requests.get(command)
 
-    def _get_filter(self, filter_id):
+
+def _get_filter(self, filter_id):
         if filter_id:
             for f in self.filters:
                 if f.filter_spec.id == filter_id:
