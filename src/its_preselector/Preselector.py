@@ -94,15 +94,19 @@ class Preselector:
         return None
 
     def set_rf_path_on(self, i):
-        command = self.config['WEB_RELAY']['base_url'] + self.config[str(i)]['on']
-        print(command)
-        requests.get(command)
+        switches = self.config[str(i)]['on'].split(',')
+        for i in range(len(switches)):
+            command = self.config['WEB_RELAY']['base_url'] + switches[i]
+            print(command)
+            requests.get(command)
 
 
     def set_rf_path_off(self, i):
-        command = self.config['WEB_RELAY']['base_url'] + self.config[str(i)]['off']
-        print(command)
-        requests.get(command)
+        switches = self.config['WEB_RELAY']['base_url'] + self.config[str(i)]['off'].split(',')
+        for i in range(len(switches)):
+            command = self.config['WEB_RELAY']['base_url'] + switches[i]
+            print(command)
+            requests.get(command)
 
     def set_source_on(self, key):
         switches =  self.config[key]['on'].split(',')
