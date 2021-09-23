@@ -2,7 +2,10 @@ from its_preselector.RfPath import RfPath
 from its_preselector.Filter import Filter
 from its_preselector.Amplifier import Amplifier
 from its_preselector.CalSource import CalSource
+from its_preselector.HardwareSpec import HardwareSpec
 import requests
+
+
 class Preselector:
 
     def __init__(self):
@@ -31,9 +34,16 @@ class Preselector:
 
         self.cal_sources = []
         try:
-            self._set_cal_sources(sigmf['global']['ntia-sensor:sensor']['preselector']['rf_paths'])
+            self._set_cal_sources(sigmf['global']['ntia-sensor:sensor']['preselector']['cal_sources'])
         except KeyError as e:
             pass
+
+        self.preselector_spec = []
+        try:
+           self.preselector_spec = HardwareSpec(sigmf['global']['ntia-sensor:sensor']['preselector']['preselector_spec'])
+        except KeyError as e:
+            pass
+
 
     def _get_rf_paths(self, paths):
         for path in paths:
@@ -42,15 +52,13 @@ class Preselector:
 
     def _set_filters(self, filters):
         for f in filters:
-            print('creating filter from ' + str(f))
             filter = Filter(f)
             self.filters.append(filter)
 
     def _set_amplifiers(self, amplifiers):
         for a in amplifiers:
-            print('creating amplifier from ' + str(a))
             amplifier = Amplifier(a)
-            self.filters.append(amplifier)
+            self.amplifiers.append(amplifier)
 
     def _set_cal_sources(self, cal_sources):
         for c in cal_sources:
@@ -93,6 +101,24 @@ class Preselector:
                 return filter.frequency_high_stopband
         return None
 
+    def get_gain(self, rf_path_index):
+        if rf_path_index < len(self.rf_paths):
+            path = self.rf_paths[rf_path_index]
+            amp_id = path.amplifier_id
+            amplifier = self._get_amplifier(amp_id)
+            if amplifier:
+                return amplifier.gain
+        return None
+
+    def get_noise_figure(self, rf_path_index):
+        if rf_path_index < len(self.rf_paths):
+            path = self.rf_paths[rf_path_index]
+            amp_id = path.amplifier_id
+            amplifier = self._get_amplifier(amp_id)
+            if amplifier:
+                return amplifier.noise_figure
+        return None
+
     def set_rf_path_on(self, i):
         switches = self.config[str(i)]['on'].split(',')
         for i in range(len(switches)):
@@ -125,11 +151,20 @@ class Preselector:
             requests.get(command)
 
 
-def _get_filter(self, filter_id):
+    def _get_filter(self, filter_id):
         if filter_id:
             for f in self.filters:
                 if f.filter_spec.id == filter_id:
                     return f
+
+        return None
+
+
+    def _get_amplifier(self, amp_id):
+        if amp_id:
+            for amp in self.amplifiers:
+                if amp.amplifier_spec.id == amp_id:
+                    return amp
 
         return None
 

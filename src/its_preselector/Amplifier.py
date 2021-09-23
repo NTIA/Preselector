@@ -1,15 +1,13 @@
 from its_preselector.HardwareSpec import HardwareSpec
 class Amplifier:
 
-    def __init__(self):
-        self.amplifier_spec	= None
+
+    def __init__(self, meta):
+        self.amplifier_spec = None
         self.gain = None
         self.noise_figure = None
         self.max_power = None
-
-    def __init__(self, meta):
         if 'amplifier_spec' in meta:
-            print('setting amplifier_spec')
             self.amplifier_spec = HardwareSpec(meta['amplifier_spec'])
         if 'gain' in meta:
             self.gain = meta['gain']
