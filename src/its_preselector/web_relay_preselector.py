@@ -1,12 +1,8 @@
-from its_preselector.rf_path import RfPath
-from its_preselector.filter import Filter
-from its_preselector.amplifier import Amplifier
-from its_preselector.cal_source import CalSource
-from its_preselector.hardware_spec import HardwareSpec
+from its_preselector.preselector import Preselector
 import requests
 
 
-class WebRelayPreselector:
+class WebRelayPreselector(Preselector):
 
     def set_rf_path_on(self, i):
         key = str(i)

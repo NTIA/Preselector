@@ -5,6 +5,7 @@ from its_preselector.amplifier import Amplifier
 from its_preselector.cal_source import CalSource
 from its_preselector.hardware_spec import HardwareSpec
 
+
 class Preselector(ABC):
 
     config = None
