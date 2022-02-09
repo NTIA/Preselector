@@ -1,6 +1,7 @@
-from its_preselector.HardwareSpec import HardwareSpec
-class Filter:
+from its_preselector.hardware_spec import HardwareSpec
 
+
+class Filter:
 
     def __init__(self, props):
         self.filter_spec = None

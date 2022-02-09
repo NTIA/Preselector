@@ -1,6 +1,7 @@
-from its_preselector.HardwareSpec import HardwareSpec
-class Amplifier:
+from its_preselector.hardware_spec import HardwareSpec
 
+
+class Amplifier:
 
     def __init__(self, meta):
         self.amplifier_spec = None
@@ -13,5 +14,5 @@ class Amplifier:
             self.gain = meta['gain']
         if 'noise_figure' in meta:
             self.noise_figure = meta['noise_figure']
-        if 'noise_figure' in meta:
+        if 'max_power' in meta:
             self.max_power = meta['max_power']
