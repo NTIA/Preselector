@@ -130,10 +130,6 @@ class Preselector(ABC):
     def set_rf_path(self, i):
         pass
 
-    @abstractmethod
-    def set_source(self, key):
-        pass
-
     def __get_filter(self, filter_id):
         if filter_id:
             for f in self.filters:
@@ -151,11 +147,12 @@ class Preselector(ABC):
         return None
 
     def __add_sources(self):
-        for i in len(self.rf_paths):
-            rf_path = self.rf_paths[i]
-            if rf_path.name:
-                if rf_path.name not in self.config:
-                    path = self.config[str(i)]
-                    self.config[rf_path.name] = path
+        if self.rf_paths:
+            for i in range(len(self.rf_paths)):
+                rf_path = self.rf_paths[i]
+                if rf_path.name:
+                    if rf_path.name not in self.config:
+                        path = self.config[str(i)]
+                        self.config[rf_path.name] = path
 
 
