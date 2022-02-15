@@ -13,6 +13,7 @@ class TestWebRelayPreselector(unittest.TestCase):
         cls.preselector = WebRelayPreselector(sensor_def, {})
         null_file = open('null_preselector.sigmf-meta')
         null_def = json.load(null_file)
+        null_file.close()
         cls.empty_preselector = WebRelayPreselector(null_def, {})
 
     def test_valid_preselector(self):

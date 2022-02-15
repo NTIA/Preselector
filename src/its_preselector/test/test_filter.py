@@ -13,6 +13,7 @@ class TestFilter(unittest.TestCase):
         cls.preselector = WebRelayPreselector(sensor_def, {})
         null_file = open('null_preselector.sigmf-meta')
         null_def = json.load(null_file)
+        null_file.close()
         cls.empty_preselector = WebRelayPreselector(null_def, {})
 
     def test_valid_filter_spec(self):
@@ -28,6 +29,10 @@ class TestFilter(unittest.TestCase):
         self.assertEqual(3700000000.0, amplifier.frequency_high_stopband)
         self.assertIsNone(amplifier.frequency_low_passband)
         self.assertIsNone(amplifier.frequency_high_passband)
+
+    def test_empty_filter(self):
+        self.assertIsNotNone(self.empty_preselector.filters)
+        self.assertEqual(0, len(self.empty_preselector.filters))
 
 
 if __name__ == '__main__':

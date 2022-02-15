@@ -13,6 +13,7 @@ class TestCalSource(unittest.TestCase):
         cls.preselector = WebRelayPreselector(sensor_def, {})
         null_file = open('null_preselector.sigmf-meta')
         null_def = json.load(null_file)
+        null_file.close()
         cls.empty_preselector = WebRelayPreselector(null_def, {})
 
     def test_valid_cal_source(self):
@@ -27,6 +28,10 @@ class TestCalSource(unittest.TestCase):
         self.assertEqual("SG53400067", spec.id)
         self.assertEqual("Keysight 346B", spec.model)
         self.assertEqual("https://www.keysight.com/en/pd-1000001299%3Aepsg%3Apro-pn-346B/noise-source-10-mhz-to-18-ghz-nominal-enr-15-db?cc=US&lc=eng",spec.supplemental_information)
+
+    def test_empty_cal_source(self):
+        self.assertIsNotNone(self.empty_preselector.cal_sources)
+        self.assertEqual(0, len(self.empty_preselector.cal_sources))
 
 if __name__ == '__main__':
     unittest.main()

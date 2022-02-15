@@ -31,7 +31,6 @@ class TestAmplifier(unittest.TestCase):
         self.assertEqual("https://nardamiteq.com/docs/MITEQ_Amplifier-AFS.JS_c41.pdf", spec.supplemental_information)
 
     def test_empty_amplifiers(self):
-        self.assertIsNotNone(self.empty_preselector)
         self.assertIsNotNone(self.empty_preselector.amplifiers)
         self.assertEqual(0, len(self.empty_preselector.amplifiers))
 
