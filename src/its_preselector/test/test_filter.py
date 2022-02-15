@@ -1,5 +1,5 @@
 import unittest
-from its_preselector.preselector import Preselector
+from its_preselector.web_relay_preselector import WebRelayPreselector
 import json
 
 
@@ -10,10 +10,10 @@ class TestFilter(unittest.TestCase):
         file = open('metadata.sigmf-meta')
         sensor_def = json.load(file)
         file.close()
-        cls.preselector = Preselector(sensor_def, {})
+        cls.preselector = WebRelayPreselector(sensor_def, {})
         null_file = open('null_preselector.sigmf-meta')
         null_def = json.load(null_file)
-        cls.empty_preselector = Preselector(null_def, {})
+        cls.empty_preselector = WebRelayPreselector(null_def, {})
 
     def test_valid_filter_spec(self):
         spec = self.preselector.filters[0].filter_spec

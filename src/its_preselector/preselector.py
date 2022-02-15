@@ -8,23 +8,13 @@ from its_preselector.hardware_spec import HardwareSpec
 
 class Preselector(ABC):
 
-    config = None
-    base_url = None
-    amplifiers = []
-    rf_paths = []
-    filters = []
-    cal_sources = []
-    preselector_spec = []
-
-    def __init__(self):
-        pass
-
     def __init__(self, sigmf, config):
+        self.amplifiers = []
+        self.rf_paths = []
+        self.filters = []
+        self.cal_sources = []
+        self.preselector_spec = []
         self.config = config
-        if 'WEB_RELAY' in config:
-            web_relay = self.config['WEB_RELAY']
-            if 'base_url' in web_relay:
-                self.base_url = web_relay['base_url']
         try:
             self.__set_filters(sigmf['global']['ntia-sensor:sensor']['preselector']['filters'])
         except KeyError:
@@ -50,7 +40,6 @@ class Preselector(ABC):
                 sigmf['global']['ntia-sensor:sensor']['preselector']['preselector_spec'])
         except KeyError:
             pass
-        self.__add_sources()
 
     def __get_rf_paths(self, paths):
         for path in paths:
@@ -146,13 +135,5 @@ class Preselector(ABC):
 
         return None
 
-    def __add_sources(self):
-        if self.rf_paths:
-            for i in range(len(self.rf_paths)):
-                rf_path = self.rf_paths[i]
-                if rf_path.name:
-                    if rf_path.name not in self.config:
-                        path = self.config[str(i)]
-                        self.config[rf_path.name] = path
 
 

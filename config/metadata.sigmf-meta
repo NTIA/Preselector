@@ -66,7 +66,7 @@
           "max_power" : 13.0
         } ],
         "rf_paths" : [ {
-          "name" : "noise_diode",
+          "name" : "noise_diode_on",
           "cal_source_id" : "MY53400510",
           "filter_id" : "13FV40-00014, SN 7",
           "amplifier_id" : "1904043"

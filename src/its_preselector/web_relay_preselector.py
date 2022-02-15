@@ -4,6 +4,12 @@ import requests
 
 class WebRelayPreselector(Preselector):
 
+
+    def __init__(self, sigmf, config):
+        super().__init__(sigmf,config)
+        if 'base_url' in config:
+            self.base_url = config['base_url']
+
     def set_rf_path(self, i):
         key = str(i)
         if key in self.config:
