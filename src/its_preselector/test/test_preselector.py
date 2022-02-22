@@ -22,5 +22,48 @@ class TestWebRelayPreselector(unittest.TestCase):
     def test_empty_preselector(self):
         self.assertIsNotNone(self.empty_preselector)
 
+    def test_empty_valid_frequency_low_passband(self):
+        self.assertEqual(3550000000.0, self.preselector.get_frequency_low_passband(0))
+        self.assertEqual(self.preselector.get_frequency_low_passband(0), self.preselector.get_frequency_low_passband(1))
+
+    def test_empty_get_frequency_low_passband(self):
+        self.assertIsNone(self.empty_preselector.get_frequency_low_passband(0))
+
+    def test_valid_get_frequency_high_passband(self):
+        self.assertEqual(3700000000.0, self.preselector.get_frequency_high_passband(0))
+        self.assertEqual(self.preselector.get_frequency_high_stopband(0),
+                         self.preselector.get_frequency_high_passband(1))
+
+    def test_empty_get_frequency_high_passband(self):
+        self.assertIsNone(self.empty_preselector.get_frequency_high_passband(0))
+
+    def test_valid_get_frequency_low_stopband(self):
+        self.assertEqual(3550000000.0, self.preselector.get_frequency_low_stopband(0))
+        self.assertEqual(self.preselector.get_frequency_low_stopband(0), self.preselector.get_frequency_low_stopband(1))
+
+    def test_empty_get_frequency_low_stopband(self):
+        self.assertIsNone(self.empty_preselector.get_frequency_low_stopband(0))
+
+    def test_valid_get_frequency_high_stopband(self):
+        self.assertEqual(3700000000.0, self.preselector.get_frequency_high_stopband(0))
+        self.assertEqual(self.preselector.get_frequency_high_stopband(0),
+                         self.preselector.get_frequency_high_stopband(1))
+
+    def test_empty_get_frequency_high_stopband(self):
+        self.assertIsNone(self.empty_preselector.get_frequency_high_stopband(0))
+
+    def test_get_amplifier_gain(self):
+        self.assertEqual(30, self.preselector.get_amplifier_gain(0))
+
+    def test_empty_get_amplifier_gain(self):
+        self.assertIsNone(self.empty_preselector.get_amplifier_gain(0))
+
+    def test_get_amplifier_noise_figure(self):
+        self.assertEqual(2.0, self.preselector.get_amplifier_noise_figure(0))
+
+    def test_empty_get_amplifier_noise_figure(self):
+        self.assertIsNone(self.empty_preselector.get_amplifier_noise_figure(0))
+
+
 if __name__ == '__main__':
     unittest.main()

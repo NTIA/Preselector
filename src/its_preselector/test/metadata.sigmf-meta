@@ -52,7 +52,9 @@
 							"supplemental_information": "http://www.klfilterwizard.com/klfwpart.aspx?FWS=1112001&PN=13FV40-3625%2fU150-O%2fO"
 						},
 						"frequency_low_stopband": 3550000000.0,
-						"frequency_high_stopband": 3700000000.0
+						"frequency_high_stopband": 3700000000.0,
+						"frequency_low_passband": 3550000000.0,
+						"frequency_high_passband": 3700000000.0
 					}
 				],
 				"amplifiers": [
@@ -62,8 +64,8 @@
 							"model": "MITEQ AFS44-00101800-25-10P-44",
 							"supplemental_information": "https://nardamiteq.com/docs/MITEQ_Amplifier-AFS.JS_c41.pdf"
 						},
-						"gain": 0,
-						"noise_figure": 0,
+						"gain": 30,
+						"noise_figure": 2.0,
 						"max_power": 10
 					}
 				],
