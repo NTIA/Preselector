@@ -7,7 +7,7 @@ class TestFilter(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        file = open('metadata.sigmf-meta')
+        file = open('test_metadata.sigmf-meta')
         sensor_def = json.load(file)
         file.close()
         cls.preselector = WebRelayPreselector(sensor_def, {})
@@ -27,8 +27,8 @@ class TestFilter(unittest.TestCase):
         amplifier = self.preselector.filters[0]
         self.assertEqual(3550000000.0,amplifier.frequency_low_stopband)
         self.assertEqual(3700000000.0, amplifier.frequency_high_stopband)
-        self.assertIsNone(amplifier.frequency_low_passband)
-        self.assertIsNone(amplifier.frequency_high_passband)
+        self.assertEqual(3000000000.0, amplifier.frequency_low_passband)
+        self.assertEqual(3750000000.0, amplifier.frequency_high_passband)
 
     def test_empty_filter(self):
         self.assertIsNotNone(self.empty_preselector.filters)

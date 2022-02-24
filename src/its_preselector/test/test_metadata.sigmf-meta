@@ -53,8 +53,8 @@
 						},
 						"frequency_low_stopband": 3550000000.0,
 						"frequency_high_stopband": 3700000000.0,
-						"frequency_low_passband": 3550000000.0,
-						"frequency_high_passband": 3700000000.0
+						"frequency_low_passband": 3000000000.0,
+						"frequency_high_passband": 3750000000.0
 					}
 				],
 				"amplifiers": [

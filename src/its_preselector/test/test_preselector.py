@@ -7,7 +7,7 @@ class TestWebRelayPreselector(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        file = open('metadata.sigmf-meta')
+        file = open('test_metadata.sigmf-meta')
         sensor_def = json.load(file)
         file.close()
         cls.preselector = WebRelayPreselector(sensor_def, {})
@@ -23,15 +23,15 @@ class TestWebRelayPreselector(unittest.TestCase):
         self.assertIsNotNone(self.empty_preselector)
 
     def test_empty_valid_frequency_low_passband(self):
-        self.assertEqual(3550000000.0, self.preselector.get_frequency_low_passband(0))
+        self.assertEqual(3000000000.0, self.preselector.get_frequency_low_passband(0))
         self.assertEqual(self.preselector.get_frequency_low_passband(0), self.preselector.get_frequency_low_passband(1))
 
     def test_empty_get_frequency_low_passband(self):
         self.assertIsNone(self.empty_preselector.get_frequency_low_passband(0))
 
     def test_valid_get_frequency_high_passband(self):
-        self.assertEqual(3700000000.0, self.preselector.get_frequency_high_passband(0))
-        self.assertEqual(self.preselector.get_frequency_high_stopband(0),
+        self.assertEqual(3750000000.0, self.preselector.get_frequency_high_passband(0))
+        self.assertEqual(self.preselector.get_frequency_high_passband(0),
                          self.preselector.get_frequency_high_passband(1))
 
     def test_empty_get_frequency_high_passband(self):

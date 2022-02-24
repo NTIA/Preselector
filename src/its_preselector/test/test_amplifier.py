@@ -7,7 +7,7 @@ class TestAmplifier(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        file = open('metadata.sigmf-meta')
+        file = open('test_metadata.sigmf-meta')
         sensor_def = json.load(file)
         file.close()
         cls.preselector = WebRelayPreselector(sensor_def, {})
@@ -20,8 +20,8 @@ class TestAmplifier(unittest.TestCase):
         amplifiers = self.preselector.amplifiers
         self.assertEqual(1, len(amplifiers))
         amplifier = amplifiers[0]
-        self.assertEqual(0, amplifier.gain)
-        self.assertEqual(0, amplifier.noise_figure)
+        self.assertEqual(30, amplifier.gain)
+        self.assertEqual(2.0, amplifier.noise_figure)
         self.assertEqual(10, amplifier.max_power)
 
     def test_valid_amplifier_spec(self):

@@ -7,7 +7,7 @@ class TestRFPaths(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        file = open('metadata.sigmf-meta')
+        file = open('test_metadata.sigmf-meta')
         sensor_def = json.load(file)
         file.close()
         cls.preselector = WebRelayPreselector(sensor_def, {})
