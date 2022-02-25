@@ -42,7 +42,7 @@
             "supplemental_information" : "https://www.keysight.com/en/pd-1000001299%3Aepsg%3Apro-pn-346B/noise-source-10-mhz-to-18-ghz-nominal-enr-15-db?cc=US&lc=eng"
           },
           "type" : "Calibrated noise source",
-          "enr" : "14.6 dB"
+          "enr" : 14.6
         } ],
         "filters" : [ {
           "filter_spec" : {
@@ -66,10 +66,19 @@
           "max_power" : 13.0
         } ],
         "rf_paths" : [ {
+          "name" : "noise_diode_on",
           "cal_source_id" : "MY53400510",
           "filter_id" : "13FV40-00014, SN 7",
           "amplifier_id" : "1904043"
-        }]
+        },
+            {
+            "name" : "antenna",
+            "filter_id" : "13FV40-00014, SN 7",
+            "amplifier_id" : "1904043"
+        }
+
+
+        ]
       },
       "signal_analyzer" : {
         "sigan_spec" : {

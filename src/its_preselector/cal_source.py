@@ -1,4 +1,6 @@
-from its_preselector.HardwareSpec import HardwareSpec
+from its_preselector.hardware_spec import HardwareSpec
+
+
 class CalSource:
 
     def __init__(self, props):

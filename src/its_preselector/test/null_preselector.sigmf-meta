@@ -1,0 +1,107 @@
+{
+	"global": {
+		"core:datatype": "rf32_le",
+		"core:sample_rate": 192000000,
+		"core:description": "Mobile CBRS band measurments performed in Denver, CO",
+		"core:extensions": {
+			"ntia-algorithm": "v1.0.0",
+			"ntia-sensor": "v1.0.0",
+			"ntia-environment": "v1.0.0",
+			"ntia-location": "v1.0.0"
+		},
+		"ntia-sensor:sensor": {
+			"id": "192.168.130.190",
+			"sensor_spec": {
+				"id": "",
+				"model": "Keysight N9030B",
+				"version": "v1.0.0",
+				"description": ""
+			},
+			"antenna": {
+				"antenna_spec": {
+					"model": "Schwarzbeck RS 16",
+					"description": "datasheet http://schwarzbeck.de/Datenblatt/KRS16.pdf"
+				},
+				"type": "Omni-directional",
+				"frequency_low": 1000000000.0,
+				"frequency_high": 6000000000.0,
+				"gain": 3.0,
+				"polarization": "vertical",
+				"vertical_beam_width": 80.5,
+				"voltage_standing_wave_ratio": 1.6,
+				"cable_loss": 6.35,
+				"steerable": false
+			},
+			"preselector": {
+				"cal_sources": [
+
+				],
+				"filters": [
+				],
+				"amplifiers": [
+				],
+				"rf_paths": [
+				]
+			},
+			"signal_analyzer": {
+				"sigan_spec": {
+					"id": "SG57140329",
+					"model": "PXA N9030B",
+					"supplemental_information": "https://www.keysight.com/us/en/assets/7018-05093/data-sheets/5992-1317.pdf"
+				},
+				"frequency_low": 3,
+				"frequency_high": 26500000000.0,
+				"noise_figure": 12.88,
+				"max_power": 30.0,
+				"a2d_bits": 16
+			},
+			"computer_spec": {
+				"id": "MC 5",
+				"description": "Custom computer with Intel i7 processor, MSI motherboard, 16 GB of Ram and running Windows 7"
+			},
+			"location": {
+				"x": -117.24711,
+				"y": 32.68927,
+				"z": 119.8,
+				"speed": 0.0
+			},
+			"environment": {
+				"category": "Mobile. Denver, CO"
+			}
+		},
+		"ntia-location:coordinate_system": {
+			"coordinate_system_type": "CoordinateSystem",
+			"id": "WGS_84"
+		},
+		"ntia-sensor:calibration_datetime": "2018-02-01T12:43:53.190Z",
+		"ntia-core:measurement": {
+			"domain": "Frequency",
+			"measurement_type": "single frequency",
+			"time_start": "2018-02-01T07:59:58.553Z",
+			"time_stop": "2018-02-01T08:00:53.553Z",
+			"frequency_tuned_low": 3550000000.0,
+			"frequency_tuned_high": 3700000000.0
+		}
+	},
+	"captures": [
+		{
+			"core:sample_start": 0,
+			"core:frequency": 3625000000.0,
+			"core:datetime": "2018-02-01T07:59:58.553Z"
+		}
+	],
+	"annotations": [
+		{
+			"ntia-core:annotation_type": "CalibrationAnnotation",
+			"core:sample_start": 0,
+			"core:sample_count": 100,
+			"core:comment": "",
+			"ntia-sensor:gain_preselector": 40,
+			"ntia-sensor:noise_figure_sensor": -1,
+			"ntia-sensor:enbw_sensor": -1,
+			"ntia-sensor:mean_noise_power_sensor": -1,
+			"ntia-sensor:temperature": -1,
+			"ntia-sensor:mean_noise_power_units": "dBm"
+		}
+	]
+}
