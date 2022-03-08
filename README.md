@@ -19,7 +19,7 @@ correspond to RF paths documented in the SigMF metadata. Each of the entries in 
 config provide mappings to the associated web relay input states and every RFPath defined 
 in the sensor definition json file should have an entry in the preselector config. The keys in the dictionary may use
 the name of the RFPath or the index of the RFPath in the RFPaths array. 
-In this example, there are noise_diode_on and noise_diode_off keys to correspond to the preselector paths to turn the noise diode on and off, an antenna key to indicate the web relay states to connect to the antenna. 
+In this example, there are noise_diode_on and noise_diode_off keys to correspond to the preselector paths to turn the noise diode on and off, and an antenna key to indicate the web relay states to connect to the antenna. 
 Note: with this example configuration, you would have to set the path by the name of the source rather than the index in 
 the rf_paths array within the preselector definition in the SigMf metadata file. 
 # Installation and Usage
