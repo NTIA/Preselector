@@ -1,3 +1,4 @@
+#Overview
 This repository contains a python package to support programmatic interactions with an RF preselector. 
 The package defines an abtract Preselector class that defines a simple interface for any preselector. 
 Currently, the WebRelayPreselector class in web_relay_preselector is the only implementation of the Preselector.
@@ -21,8 +22,9 @@ in the sensor definition json file should have an entry in the preselector confi
 the name of the RFPath or the index of the RFPath in the RFPaths array. 
 In this example, there are noise_diode_on and noise_diode_off keys to correspond to the preselector paths to turn the noise diode on and off, and an antenna key to indicate the web relay states to connect to the antenna. 
 Note: with this example configuration, you would have to set the path by the name of the source rather than the index in 
-the rf_paths array within the preselector definition in the SigMf metadata file. 
-# Installation and Usage
+the rf_paths array within the preselector definition in the SigMf metadata file.
+
+# Installation 
 This repository is meant to be used as Python package. To install the package, clone the repository and enter the directory of the project in the command line (should be the same location as setup.cfg). Execute the following commands depending on your OS:
 ```
 Windows:
@@ -34,6 +36,40 @@ python3 -m build
 Python3 –m pip install dist/its-preselector-2.0.0.tar.gz 
 
 ```
+#Initialization
+```
+import json
+from its_preselector.web_relay_preselector import WebRelayPreselector
+import json
+
+
+with open('config/metadata.sigmf-meta') as sensor_def_file:
+    sensor_def = json.load(sensor_def_file)
+
+with open('config/config.json') as config_file:
+    preselector_config = json.load(config_file)
+
+preselector = WebRelayPreselector(sensor_def, preselector_config)
+```
+
+#Interactions
+## Interrogate the preselector
+Access instance properties
+<ul>
+<li>preselector.amplifiers[0].gain</li>
+<ii>...</ii>
+</ul>
+Helper methods:
+<ul>
+<li>preselector.get_amplifier_gain(rf_path_index)</li>
+<li>preselector.get_amplifier_noise_figure(rf_path_index)</li>
+<li>preselector.get_frequency_low_passband(rf_path_index)</li>
+<li>preselector.get_frequency_high_passband(rf_path_index)</li>
+<li>preselector.get_frequency_low_stopband(rf_path_index)</li>
+<li>preselector.get_frequency_high_stopband(rf_path_index)</li>
+Control
+<li>preselector.set_rf_path(rf_path_name)</li>
+
 #Contact 
 For technical questions, contact Doug Boulware, dboulware@ntia.gov
 
