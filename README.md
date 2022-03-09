@@ -34,6 +34,9 @@ python3 -m build
 Python3 –m pip install dist/its-preselector-2.0.0.tar.gz 
 
 ```
+## License
+See [LICENSE](LICENSE.md).
+
 #Contact 
 For technical questions, contact Doug Boulware, dboulware@ntia.gov
 
