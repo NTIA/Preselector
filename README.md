@@ -23,7 +23,7 @@ python3 -m build
 Python3 –m pip install dist/its-preselector-2.0.0.tar.gz 
 
 ```
-#WebRelayPreselector Configuration
+# WebRelayPreselector Configuration
 The WebRelayPreselector requires a [SigMF metadata file](https://Github.com/NTIA/sigmf-ns-ntia) that describes the Sensor preselector and a config file to describe the x310 settings for the rf paths specified in the 
 metadata and for any other desired sources. Below is an example config file for the WebRelayPreselector to describe how it works:
 ```
