@@ -1,6 +1,9 @@
 # Introduction
-A preselector is a device connected between an antenna and a signal analyzer designed to improve the performance of an RF sensor. A preselector may include a variety of components
-including, but not limited to, filters, amplifiers, calibration sources, and switches to control the components through which the RF signal flows. Just as the components within a preselector may change, so too may the way in which the switching is controlled.
+As shown in the example diagram below, a preselector is a device connected between an antenna and a signal analyzer designed to improve the performance of an RF sensor. 
+A preselector may include a variety of components including, but not limited to, filters, amplifiers, 
+calibration sources, and switches to control the components through which the RF signal flows. See below
+![Preselector Diagram](/docs/img/preselector.png?raw=true)
+Just as the components within a preselector may change, so too may the way in which the switching is controlled.
 This repository is intended to provide a general software API to interface with preselectors regardless of their components and control mechanisms. Because of the general nature of this software and the variety of components and control meachnisms that may be used within a preselector it should be expected that this software will grow over time to support additional components and control mechanisms.
 Currently, this API provides a general abstract Preselector class that may consist of any number of filters, amplifiers, and calibration sources. 
 In addition, the preselector class uses a collection of rf_paths to describe the combinations of calibration sources, filters, a
