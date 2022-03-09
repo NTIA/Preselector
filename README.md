@@ -2,7 +2,7 @@ This repository contains a python package to support programmatic interactions w
 The package defines an abtract Preselector class that defines a simple interface for any preselector. 
 Currently, the WebRelayPreselector class in web_relay_preselector is the only implementation of the Preselector.
 The WebRelayPreselector supports a preselector featuring an [x310 WebRelay](https://www.controlbyweb.com/x310/).
-The package requires a [SigMF metadata file](https://Github.com/NTIA/sigmf-ns-ntia) that describes the Sensor preselector and a config file to describe the x310 settings for the rf paths specified in the 
+The package requires a [sigmf-ns-ntia](https://Github.com/NTIA/sigmf-ns-ntia) that describes the Sensor preselector and a config file to describe the x310 settings for the rf paths specified in the 
 metadata and for any other desired sources. Below is an example config file for the WebRelayPreselector to describe how it works:
 ```
 {
