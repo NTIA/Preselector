@@ -45,7 +45,7 @@ In this example, there are noise_diode_on and noise_diode_off keys to correspond
 Note: with this example configuration, you would have to set the path by the name of the source rather than the index in 
 the rf_paths array within the preselector definition in the SigMf metadata file.
 
-#WebRelayPreselector Initialization
+# WebRelayPreselector Initialization
 ```
 import json
 from its_preselector.web_relay_preselector import WebRelayPreselector
@@ -61,7 +61,7 @@ with open('config/config.json') as config_file:
 preselector = WebRelayPreselector(sensor_def, preselector_config)
 ```
 
-#Preselector Interactions
+# Preselector Interactions
 
 ## Access instance properties
 <ul>
