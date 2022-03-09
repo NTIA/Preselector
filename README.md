@@ -67,9 +67,11 @@ Helper methods:
 <li>preselector.get_frequency_high_passband(rf_path_index)</li>
 <li>preselector.get_frequency_low_stopband(rf_path_index)</li>
 <li>preselector.get_frequency_high_stopband(rf_path_index)</li>
-Control
+</ul>
+ Control:
+ <ul>
 <li>preselector.set_rf_path(rf_path_name)</li>
-
+</ul>
 #Contact 
 For technical questions, contact Doug Boulware, dboulware@ntia.gov
 
