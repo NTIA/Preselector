@@ -9,7 +9,7 @@ This repository is intended to provide a general software API to interface with 
 Currently, this API provides a general abstract Preselector class that may consist of any number of filters, amplifiers, and calibration sources. 
 In addition, the preselector class uses a collection of rf_paths to describe the combinations of calibration sources, filters, 
 and amplifiers that may be connected based on the internal switches. A simple set_rf_path method allows users to control which rf path is configured in the preselector. 
-Finally, different switching control mechanisms are supported by extending the base Preseelctor class. Currently, this repository provides a implementation for a WebRelayPreselector that includes an [x310 WebRelay](https://www.controlbyweb.com/x310/). See below for additional details on using the WebRelayPreslector.  
+Finally, different switching control mechanisms are supported by extending the base Preseelctor class. Currently, this repository provides an implementation for a WebRelayPreselector that includes an [x310 WebRelay](https://www.controlbyweb.com/x310/). See below for additional details on using the WebRelayPreslector.  
 
 # Installation 
 This repository is meant to be used as Python package. To install the package, clone the repository and enter the directory of the project in the command line (should be the same location as setup.cfg). Execute the following commands depending on your OS:
