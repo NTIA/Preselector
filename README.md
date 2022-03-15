@@ -83,6 +83,9 @@ preselector = WebRelayPreselector(sensor_def, preselector_config)
 <li>preselector.set_rf_path(rf_path_name)</li>
 </ul>
 
+# License
+See [LICENSE](LICENSE.md).
+
 # Contact 
 For technical questions, contact Doug Boulware, dboulware@ntia.gov
 
