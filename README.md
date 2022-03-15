@@ -8,7 +8,7 @@ This repository provides a general software API to interface with preselectors r
 Currently, this API provides a general abstract Preselector class that may consist of any number of filters, amplifiers, and calibration sources. 
 In addition, the preselector class uses a collection of rf_paths to describe the combinations of calibration sources, filters, a
 nd amplifiers that may be connected based on the internal switches. A simple set_rf_path method allows users to control which rf path is configured in the preselector. 
-Finally, different switching control mechanisms are supported by extending the base Preseelctor class. Currently, this repository provides an implementation for a WebRelayPreselector that includes an [x310 WebRelay](https://www.controlbyweb.com/x310/). See below for additional details on using the WebRelayPreslector.  
+Finally, different switching control mechanisms are supported by extending the base Preseelctor class. Currently, this repository provides a implementation for a WebRelayPreselector that includes an [x310 WebRelay](https://www.controlbyweb.com/x310/). See below for additional details on using the WebRelayPreslector.  
 
 # Installation 
 To install this Python package, clone the repository and enter the directory of the project in the command line (should be the same location as setup.cfg). Execute the following commands depending on your OS (you may have to adjust for your version of python):
@@ -23,7 +23,7 @@ Python3 –m pip install dist/its-preselector-2.0.0.tar.gz
 
 ```
 #WebRelayPreselector Configuration
-The WebRelayPreselector requires a [sigmf-ns-ntia metadata file](https://Github.com/NTIA/sigmf-ns-ntia) that describes the Sensor preselector and a config file to describe the x310 settings for the rf paths specified in the 
+The WebRelayPreselector requires a [SigMF metadata file](https://Github.com/NTIA/sigmf-ns-ntia) that describes the Sensor preselector and a config file to describe the x310 settings for the rf paths specified in the 
 metadata and for any other desired sources. Below is an example config file for the WebRelayPreselector to describe how it works:
 ```
 {
@@ -44,7 +44,7 @@ In this example, there are noise_diode_on and noise_diode_off keys to correspond
 Note: with this example configuration, you would have to set the path by the name of the source rather than the index in 
 the rf_paths array.
 
-#WebRelayPreselector Initialization
+# WebRelayPreselector Initialization
 ```
 import json
 from its_preselector.web_relay_preselector import WebRelayPreselector
@@ -60,7 +60,7 @@ with open('config/config.json') as config_file:
 preselector = WebRelayPreselector(sensor_def, preselector_config)
 ```
 
-#Preselector Interactions
+# Preselector Interactions
 
 ## Access instance properties
 <ul>
