@@ -6,8 +6,8 @@ calibration sources, and switches to control the components through which the RF
 <br>Just as the components within a preselector may change, so too may the way in which the switching is controlled.
 This repository provides a general software API to interface with preselectors regardless of their components and control mechanisms. Because of the general nature of this software and the variety of components and control mechanisms that may be used within a preselector it should be expected that this software will grow over time to support additional components and control mechanisms.
 Currently, this API provides a general abstract Preselector class that may consist of any number of filters, amplifiers, and calibration sources. 
-In addition, the preselector class uses a collection of rf_paths to describe the combinations of calibration sources, filters, a
-nd amplifiers that may be connected based on the internal switches. A simple set_rf_path method allows users to control which rf path is configured in the preselector. 
+In addition, the preselector class uses a collection of rf_paths to describe the combinations of calibration sources, filters, 
+and amplifiers that may be connected based on the internal switches. A simple set_rf_path method allows users to control which rf path is configured in the preselector. 
 Finally, different switching control mechanisms are supported by extending the base Preseelctor class. Currently, this repository provides a implementation for a WebRelayPreselector that includes an [x310 WebRelay](https://www.controlbyweb.com/x310/). See below for additional details on using the WebRelayPreslector.  
 
 # Installation 
