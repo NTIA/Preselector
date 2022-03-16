@@ -1,14 +1,18 @@
 # Introduction
-As shown in the example diagram below, a preselector is a device connected between an antenna and a signal analyzer designed to improve the performance of an RF sensor. 
-A preselector may include a variety of components including, but not limited to, filters, amplifiers, 
-calibration sources, and switches to control the components through which the RF signal flows.
+A preselector is a device connected between an antenna and a signal analyzer 
+designed to improve the performance and capabilities of an RF sensor. 
+A preselector may include a variety of components, e.g., filters, amplifiers, 
+calibration sources, and switches.
 ![Preselector Diagram](/docs/img/preselector.png)
-<br>Just as the components within a preselector may change, so too may the way in which the switching is controlled.
-This repository provides a general software API to interface with preselectors regardless of their components and control mechanisms. Because of the general nature of this software and the variety of components and control mechanisms that may be used within a preselector it should be expected that this software will grow over time to support additional components and control mechanisms.
-Currently, this API provides a general abstract Preselector class that may consist of any number of filters, amplifiers, and calibration sources. 
-In addition, the preselector class uses a collection of rf_paths to describe the combinations of calibration sources, filters, 
-and amplifiers that may be connected based on the internal switches. A simple set_rf_path method allows users to control which rf path is configured in the preselector. 
-Finally, different switching control mechanisms are supported by extending the base Preseelctor class. Currently, this repository provides an implementation for a WebRelayPreselector that includes an [x310 WebRelay](https://www.controlbyweb.com/x310/). See below for additional details on using the WebRelayPreslector.  
+<br>Just as the components within a preselector may change, so too may the way in which 
+the switching is controlled. This repository provides a general software API to control preselectors 
+regardless of their components and control mechanisms. 
+This software will grow over time to support additional components and control mechanisms.
+Currently, this API provides a general abstract Preselector class that uses an rf_path array to
+describe the available combinations of calibration sources, filters, 
+and amplifiers. A simple set_rf_path method allows users to specify the rf path by index or name. 
+Finally, different switching control mechanisms are supported by extending the base Preseelctor class. 
+Currently, this repository provides an implementation for a WebRelayPreselector that includes an [x310 WebRelay](https://www.controlbyweb.com/x310/). See below for additional details on using the WebRelayPreslector.  
 
 # Installation 
 To install this Python package, clone the repository and enter the directory of the project in the command line (should be the same location as setup.cfg). Execute the following commands depending on your OS (you may have to adjust for your version of python):
