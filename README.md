@@ -19,11 +19,11 @@ To install this Python package, clone the repository and enter the directory of 
 ```
 Windows:
 py –m build 
-py -m pip install dist/its-preselector-2.0.0.tar.gz 
+py -m pip install dist/its-preselector-2.0.1.tar.gz 
 
 Linux:
 python3 -m build
-Python3 –m pip install dist/its-preselector-2.0.0.tar.gz 
+Python3 –m pip install dist/its-preselector-2.0.1.tar.gz 
 
 ```
 # WebRelayPreselector Configuration

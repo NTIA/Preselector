@@ -135,5 +135,7 @@ class Preselector(ABC):
 
         return None
 
-
+    @abstractmethod
+    def get_sensor_value(sensor):
+        pass
 
