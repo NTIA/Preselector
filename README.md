@@ -31,7 +31,7 @@ The WebRelayPreselector requires a [SigMF metadata file](https://Github.com/NTIA
 metadata and for any other desired sources. Below is an example config file for the WebRelayPreselector to describe how it works:
 ```
 {
-  "base_url" : "http://192.168.130.32/state.xml?relay",
+  "base_url" : "http://192.168.130.32/state.xml",
   "noise_diode_on" : "1State=1,2State=1,3State=0,4State=0",
   "noise_diode_off" : "1State=0,2State=1,3State=0,4State=0",
   "antenna" : "1State=0,2State=0,3State=0,4State=0"
