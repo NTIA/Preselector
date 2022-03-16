@@ -6,7 +6,7 @@ calibration sources, and switches. An example preselector is shown in Figure 1. 
 the switching is controlled. This repository provides a general software API to control preselectors 
 regardless of their components and control mechanisms. 
 ![Preselector Diagram](/docs/img/preselector.png)
-<figcaption align = "center"><b>Figure.1 - Example Preselector</b></figcaption>
+<p align = "center"><figcaption align = "center"><b>Figure.1 - Example Preselector</b></figcaption></p>
 <br>
 This software will grow over time to support additional components and control mechanisms.
 Currently, this API provides a general abstract Preselector class that uses an rf_path array to
