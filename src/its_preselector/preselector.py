@@ -116,7 +116,7 @@ class Preselector(ABC):
         return None
 
     @abstractmethod
-    def set_rf_path(self, i):
+    def set_state(self, i):
         pass
 
     def __get_filter(self, filter_id):

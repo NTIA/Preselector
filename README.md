@@ -10,7 +10,8 @@ regardless of their components and control mechanisms.
 This software will grow over time to support additional components and control mechanisms.
 Currently, this API provides a general abstract Preselector class that uses an rf_path array to
 describe the available combinations of calibration sources, filters, 
-and amplifiers. A simple set_rf_path method allows users to specify the rf path by index or name. 
+and amplifiers. A simple set_state method allows users to specify the state of the preselector 
+by the state key specified in the preselector config. 
 Finally, different switching control mechanisms are supported by extending the base Preseelctor class. 
 Currently, this repository provides an implementation for a WebRelayPreselector that includes an [x310 WebRelay](https://www.controlbyweb.com/x310/). See below for additional details on using the WebRelayPreslector.  
 
@@ -62,6 +63,7 @@ with open('config/config.json') as config_file:
     preselector_config = json.load(config_file)
 
 preselector = WebRelayPreselector(sensor_def, preselector_config)
+preselector.set_state('antenna')
 ```
 
 # Preselector Interactions
@@ -84,7 +86,7 @@ preselector = WebRelayPreselector(sensor_def, preselector_config)
 
 ## Control:
  <ul>
-<li>preselector.set_rf_path(rf_path_name)</li>
+<li>preselector.set_state(rf_path_name)</li>
 </ul>
 
 # License
