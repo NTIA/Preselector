@@ -20,7 +20,7 @@ class WebRelayPreselector(Preselector):
             if self.base_url and self.base_url != '':
                 for i in range(len(switches)):
                     command = self.base_url + '?relay' + switches[i]
-                    print(command)
+                    logger.debug(command)
                     response = requests.get(command)
                     if response.status_code != requests.codes.ok:
                         raise Exception('Unable to set preselector state. Verify configuration and connectivity.')
