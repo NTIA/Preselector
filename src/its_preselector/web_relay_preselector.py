@@ -43,3 +43,4 @@ class WebRelayPreselector(Preselector):
             return response.status_code == requests.codes.ok
         except:
             logger.error("Unable to connect to preselector")
+        return False
