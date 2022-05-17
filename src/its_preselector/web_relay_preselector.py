@@ -38,7 +38,7 @@ class WebRelayPreselector(Preselector):
         if sensor is None:
             sensor_tag = 'oneWireSensor' + sensor_num_string
             sensor = root.find(sensor_tag)
-        if sensor is None
+        if sensor is None:
             return None
         else:
             return sensor.text
