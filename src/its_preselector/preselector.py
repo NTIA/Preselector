@@ -43,7 +43,7 @@ class Preselector(ABC):
             if 'global' in sigmf:
                 self.__set_cal_sources(sigmf['global']['ntia-sensor:sensor']['preselector']['cal_sources'])
             else:
-                self.__get_rf_paths(sigmf['preselector']['cal_sources'])
+                self.__set_cal_sources(sigmf['preselector']['cal_sources'])
         except KeyError:
             pass
 
