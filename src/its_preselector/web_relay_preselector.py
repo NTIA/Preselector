@@ -31,11 +31,17 @@ class WebRelayPreselector(Preselector):
 
     def get_sensor_value(self, sensor_num):
         sensor_num_string =  str(sensor_num)
-        response = requests.get(self.base_url + '?sensor' +sensor_num_string)
+        response = requests.get(self.base_url)
         sensor_tag = 'sensor' + sensor_num_string
         root = ET.fromstring(response.text)
         sensor = root.find(sensor_tag)
-        return sensor.text
+        if sensor is None:
+            sensor_tag = 'oneWireSensor' + sensor_num_string
+            sensor = root.find(sensor_tag)
+        if sensor is None
+            return None
+        else:
+            return sensor.text
 
     def healthy(self):
         try:
