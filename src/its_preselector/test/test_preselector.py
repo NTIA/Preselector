@@ -15,6 +15,12 @@ class TestWebRelayPreselector(unittest.TestCase):
         null_def = json.load(null_file)
         null_file.close()
         cls.empty_preselector = WebRelayPreselector(null_def, {})
+        file = open('sensor_definition.json')
+        sensor_def = json.load(file)
+        file.close()
+        cls.scos_preselector = WebRelayPreselector(sensor_def, {})
+
+
 
     def test_valid_preselector(self):
         self.assertIsNotNone(self.preselector)
@@ -63,6 +69,9 @@ class TestWebRelayPreselector(unittest.TestCase):
 
     def test_empty_get_amplifier_noise_figure(self):
         self.assertIsNone(self.empty_preselector.get_amplifier_noise_figure(0))
+
+    def test_scos_calibration_sources(self):
+        self.assertEqual(1, len(self.scos_preselector.cal_sources))
 
 
 if __name__ == '__main__':
