@@ -32,10 +32,12 @@ class WebRelayPreselector(Preselector):
     def get_sensor_value(self, sensor_num):
         sensor_num_string =  str(sensor_num)
         response = requests.get(self.base_url)
+        #Check for X310 xml format first.
         sensor_tag = 'sensor' + sensor_num_string
         root = ET.fromstring(response.text)
         sensor = root.find(sensor_tag)
         if sensor is None:
+            #Didn't find X310 format sensor so check for X410 format. 
             sensor_tag = 'oneWireSensor' + sensor_num_string
             sensor = root.find(sensor_tag)
         if sensor is None:
