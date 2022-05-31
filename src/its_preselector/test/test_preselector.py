@@ -15,12 +15,9 @@ class TestWebRelayPreselector(unittest.TestCase):
         null_def = json.load(null_file)
         null_file.close()
         cls.empty_preselector = WebRelayPreselector(null_def, {})
-        file = open('sensor_definition.json')
-        sensor_def = json.load(file)
-        file.close()
+        with open('sensor_definition.json', 'r') as f:
+            sensor_def = json.load(f)
         cls.scos_preselector = WebRelayPreselector(sensor_def, {})
-
-
 
     def test_valid_preselector(self):
         self.assertIsNotNone(self.preselector)
