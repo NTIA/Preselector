@@ -16,28 +16,44 @@ class Preselector(ABC):
         self.preselector_spec = []
         self.config = config
         try:
-            self.__set_filters(sigmf['global']['ntia-sensor:sensor']['preselector']['filters'])
+            if 'global' in sigmf:
+                self.__set_filters(sigmf['global']['ntia-sensor:sensor']['preselector']['filters'])
+            else:
+                self.__set_filters(sigmf['preselector']['filters'])
         except KeyError:
             pass
 
         try:
-            self.__set_amplifiers(sigmf['global']['ntia-sensor:sensor']['preselector']['amplifiers'])
+            if 'global' in sigmf:
+                self.__set_amplifiers(sigmf['global']['ntia-sensor:sensor']['preselector']['amplifiers'])
+            else:
+                self.__set_amplifiers(sigmf['preselector']['amplifiers'])
         except KeyError:
             pass
 
         try:
-            self.__get_rf_paths(sigmf['global']['ntia-sensor:sensor']['preselector']['rf_paths'])
+            if 'global' in sigmf:
+                self.__get_rf_paths(sigmf['global']['ntia-sensor:sensor']['preselector']['rf_paths'])
+            else:
+                self.__get_rf_paths(sigmf['preselector']['rf_paths'])
         except KeyError:
             pass
 
         try:
-            self.__set_cal_sources(sigmf['global']['ntia-sensor:sensor']['preselector']['cal_sources'])
+            if 'global' in sigmf:
+                self.__set_cal_sources(sigmf['global']['ntia-sensor:sensor']['preselector']['cal_sources'])
+            else:
+                self.__set_cal_sources(sigmf['preselector']['cal_sources'])
         except KeyError:
             pass
 
         try:
-            self.preselector_spec = HardwareSpec(
-                sigmf['global']['ntia-sensor:sensor']['preselector']['preselector_spec'])
+            if 'global' in sigmf:
+                self.preselector_spec = HardwareSpec(
+                    sigmf['global']['ntia-sensor:sensor']['preselector']['preselector_spec'])
+            else:
+                self.preselector_spec = HardwareSpec(
+                    sigmf['preselector']['preselector_spec'])
         except KeyError:
             pass
 
