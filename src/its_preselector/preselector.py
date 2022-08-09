@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, abstractproperty
 from its_preselector.rf_path import RfPath
 from its_preselector.filter import Filter
 from its_preselector.amplifier import Amplifier
@@ -152,6 +152,21 @@ class Preselector(ABC):
         return None
 
     @abstractmethod
-    def get_sensor_value(sensor):
+    def get_sensor_value(self, sensor):
+        pass
+
+
+    @property
+    @abstractmethod
+    def id(self):
+        pass
+
+    @property
+    @abstractmethod
+    def name(self) -> str:
+        pass
+
+    @abstractmethod
+    def get_status(self) -> dict:
         pass
 

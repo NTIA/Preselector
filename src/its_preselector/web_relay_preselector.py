@@ -20,3 +20,16 @@ class WebRelayPreselector(Preselector):
 
     def healthy(self):
         return self.web_relay.healthy()
+
+    @property
+    def id(self):
+        return self.web_relay.base_url
+
+    @property
+    def name(self):
+        return self.web_relay.name
+
+    def get_status(self):
+        return self.web_relay.get_status()
+
+

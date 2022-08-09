@@ -29,10 +29,9 @@ class ControlByWebWebRelay(WebRelay):
         else:
             return sensor.text
 
-    def set_state(self, i):
-        key = str(i)
-        if key in self.config:
-            switches = self.config[str(i)].split(',')
+    def set_state(self, key):
+        if key in self.config['control_states']:
+            switches = self.config['control_states'][str(key)].split(',')
             if self.base_url and self.base_url != '':
                 for i in range(len(switches)):
                     command = self.base_url + '?relay' + switches[i]
@@ -52,3 +51,85 @@ class ControlByWebWebRelay(WebRelay):
         except:
             logger.error("Unable to connect to preselector")
         return False
+
+    @property
+    def id(self):
+        return self.base_url
+
+    @property
+    def name(self):
+        return self.config['name']
+
+    def get_status(self):
+        state = {}
+        healthy = False
+        try:
+            response = self.get_state_xml()
+            healthy = response.status_code == requests.codes.ok
+            if healthy:
+                state_xml = response.text
+                xml_root = ET.fromstring(state_xml)
+
+                for key, value in self.config['status_states'].items():
+                    relay_states = value.split(',')
+                    matches = True
+                    for relay_state in relay_states:
+                        matches = matches and self.state_matches(relay_state, xml_root)
+                    state[key] = matches
+        except:
+            logger.error('Unable to get status')
+        state['web_relay_healthy'] = healthy
+        return state
+
+    def state_matches(self, relay_and_state, xml_root):
+        relay_state_list = relay_and_state.split('=')
+        desired_state = relay_state_list[1]
+        relay_tag = relay_state_list[0]
+        relay_element = xml_root.find(relay_tag)
+        if relay_element is None:
+            raise Exception('Unable to locate ' + relay_tag)
+        else:
+            return desired_state == relay_element.text
+
+    def get_state_summary(self, response):
+        relay_state = '1State=' + self.get_relay_state(response, 'relay1') + \
+                      ',2State=' + self.get_relay_state(response, 'relay2') + \
+                      ',3State=' + self.get_relay_state(response, 'relay3') + \
+                      ',4State=' + self.get_relay_state(response, 'relay4')
+        return relay_state
+
+    def map_relay_state_to_config(self, relay_state):
+        for k, value in self.config.items():
+            if relay_state == value:
+                return k
+        return None
+
+    @staticmethod
+    def is_enabled(state_xml, relay):
+        root = ET.fromstring(state_xml)
+        relay_node = root.find(relay)
+        if relay_node is None:
+            raise Exception('Relay ' + relay + ' does not exist.')
+        else:
+            relay_state = relay_node.text
+            if relay_state == '1':
+                return True
+            else:
+                return False
+
+    @staticmethod
+    def get_relay_state(state_xml, relay):
+        root = ET.fromstring(state_xml)
+        relay_node = root.find(relay)
+        if relay_node is None:
+            raise Exception('Relay ' + relay + ' does not exist.')
+        else:
+            relay_state = relay_node.text
+            return relay_state
+
+    def get_state_xml(self):
+        if self.base_url and self.base_url != '':
+            response = requests.get(self.base_url)
+            return response
+        else:
+            raise Exception('base_url is None or blank')

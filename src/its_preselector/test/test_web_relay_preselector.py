@@ -31,9 +31,34 @@ class MyTestCase(unittest.TestCase):
             preselector.set_state('antenna')
 
     def test_healthy_false(self):
-        preselector = WebRelayPreselector(self.sensor_def, {'base_url': 'http://bad_preselector.gov',
-                                                            'antenna': '1State=0,2State=0,3State=0,4State=0'})
+        preselector =WebRelayPreselector(self.sensor_def, {
+            'name': 'preselector',
+            'base_url': 'http://bad_preselector.gov',
+            'control_states': {"noise_diode_off": "1State=1,2State=0,3State=0,4State=0"},
+            'status_states': {
+                "noise diode powered": "relay2=1",
+                "antenna path enabled": "relay1=0",
+                "noise diode path enabled": "relay1=1",
+                "noise on": 'relay2=1,relay1=1',
+                "measurements": 'relay1=0,relay2=0,relay3=0,relay4=0'
+            }})
+
         self.assertFalse(preselector.healthy())
+
+    def test_get_status_bad_url(self):
+        preselector = WebRelayPreselector(self.sensor_def, {
+            'name': 'preselector',
+            'base_url': 'http://bad_preselector.gov',
+            'control_states': {"noise_diode_off": "1State=1,2State=0,3State=0,4State=0"},
+            'status_states': {
+                "noise diode powered": "relay2=1",
+                "antenna path enabled": "relay1=0",
+                "noise diode path enabled": "relay1=1",
+                "noise on": 'relay2=1,relay1=1',
+                "measurements": 'relay1=0,relay2=0,relay3=0,relay4=0'
+            }})
+        status = preselector.get_status()
+        self.assertFalse(status['web_relay_healthy'])
 
 
 if __name__ == '__main__':
