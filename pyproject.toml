@@ -53,7 +53,7 @@ dev = [
 "NTIA GitHub" = "https://github.com/NTIA"
 "ITS Website" = "https://its.ntia.gov"
 
-[tool.filt.sdist]
+[tool.flit.sdist]
 exclude = ["doc/"]
 
 [tool.flit.module]
