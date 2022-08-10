@@ -1,7 +1,60 @@
 [build-system]
-requires = [
-    "setuptools>=42",
-    "wheel",
-    "requests>=2.25.1"
+requires = ["flit_core>=3.4,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "its-preselector"
+dynamic = ["version", "description"]
+readme = "README.md"
+requires-python = ">=3.7"
+license = { file = "LICENSE.md" }
+
+authors = [
+    { name = "The Institute for Telecommunication Sciences" },
 ]
-build-backend = "setuptools.build_meta"
+
+maintainers = [
+    { name = "Doug Boulware", email = "dboulware@ntia.gov" },
+]
+
+keywords = [
+    "preselector", "SDR", "NTIA", "web relay", "API",
+    "radio", "NTIA", "ITS", "telecommunications", "spectrum",
+]
+
+classifiers = [
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Telecommunications Industry",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
+
+dependencies = [
+    "requests>=2.25.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "flit>=3.4,<4",
+    "pre-commit>=2.20.0",
+    "pytest>=7.1.2",
+]
+
+[project.urls]
+"Repository" = "https://github.com/NTIA/Preselector"
+"Bug Tracker" = "https://github.com/NTIA/Preselector/issues"
+"NTIA GitHub" = "https://github.com/NTIA"
+"ITS Website" = "https://its.ntia.gov"
+
+[tool.filt.sdist]
+exclude = ["doc/"]
+
+[tool.flit.module]
+name = "its_preselector"
