@@ -18,6 +18,14 @@ See below for additional details on using the `WebRelayPreselector`.
 
 This software will grow over time to support additional components and control mechanisms.
 
+## Table of Contents
+
+- Introduction
+- Usage
+- Development
+- License
+- Contact
+
 ## Introduction
 
 A preselector is a device, connected between an antenna and a signal analyzer, designed to
@@ -29,29 +37,26 @@ may change, so too may the way in which the switching is controlled.
 ![Preselector Diagram](/docs/img/preselector.png)
 <p style="text-align: center;"><figcaption align = "center"><b>Figure.1 - Example Preselector</b></figcaption></p>
 
-## Installation
+## Usage
 
-To install this Python package, clone the repository and enter the directory of the project in
-the command line (should be the same location as `setup.cfg`). Execute the following commands
-depending on your OS (you may have to adjust for your version of Python):
+To install this Python package, clone the repository and enter the directory of the
+project in the command line. Execute the following commands depending on your OS (you may
+have to adjust for your version of Python):
 
 ```bash
 # Windows
-py –m build 
-py -m pip install dist/its-preselector-2.0.1.tar.gz 
+py -m pip install .
 
 # Linux
-python3 -m build
-python3 –m pip install dist/its-preselector-2.0.1.tar.gz 
-
+python3 –m pip install .
 ```
 
-## `WebRelayPreselector` Configuration
+### `WebRelayPreselector` Configuration
 
 The `WebRelayPreselector` requires a [SigMF metadata file](https://Github.com/NTIA/sigmf-ns-ntia)
-that describes the sensor preselector and a config file to describe the x310 settings for the RF
-paths specified in the metadata and for any other desired sources. Below is an example config file
-for the `WebRelayPreselector` to describe how it works:
+that describes the sensor preselector and a config file to describe the x310 settings for
+the RF paths specified in the metadata and for any other desired sources. Below is an
+example config file for the `WebRelayPreselector` to describe how it works:
 
 ```json
 {
@@ -62,22 +67,23 @@ for the `WebRelayPreselector` to describe how it works:
 }
 ```
 
-The `base_url` key is the only required key for the `WebRelayPreselector` and should map to the
-base URL to interact with the WebRelay (see [https://www.controlbyweb.com/x310](https://www.controlbyweb.com/x310)
-for more info). The other keys should correspond to RF paths documented in the SigMF metadata.
-Each of the entries in the config provide mappings to the associated web relay input states and
-every RFPath defined in the sensor definition json file should have an entry in the preselector
-config. The keys in the dictionary may use the name of the RFPath or the index of the RFPath in
-the RFPaths array.
+The `base_url` key is the only required key for the `WebRelayPreselector` and should map
+to the base URL to interact with the WebRelay (see
+[https://www.controlbyweb.com/x310](https://www.controlbyweb.com/x310) for more info).
+The other keys should correspond to RF paths documented in the SigMF metadata. Each of the
+entries in the config provide mappings to the associated web relay input states and every
+RFPath defined in the sensor definition json file should have an entry in the preselector
+config. The keys in the dictionary may use the name of the RFPath or the index of the RFPath
+in the RFPaths array.
 
 In this example, there are `noise_diode_on` and `noise_diode_off` keys to correspond to the
-preselector paths to turn the noise diode on and off, and an antenna key to indicate the web
-relay states to connect to the antenna.
+preselector paths to turn the noise diode on and off, and an antenna key to indicate the
+web relay states to connect to the antenna.
 
-Note: with this example configuration, you would have to set the path by the name of the source
-rather than the index in the `rf_paths` array.
+Note: with this example configuration, you would have to set the path by the name of the
+source rather than the index in the `rf_paths` array.
 
-## `WebRelayPreselector` Initialization
+### `WebRelayPreselector` Initialization
 
 ```python
 import json
@@ -94,14 +100,14 @@ preselector = WebRelayPreselector(sensor_def, preselector_config)
 preselector.set_state('antenna')
 ```
 
-## Preselector Interactions
+### Preselector Interactions
 
-### Access instance properties
+#### Access instance properties
 
 - `preselector.amplifiers[0].gain`
 - ...
 
-### Helper methods
+#### Helper methods
 
 - `preselector.get_amplifier_gain(rf_path_index)`
 - `preselector.get_amplifier_noise_figure(rf_path_index)`
@@ -110,13 +116,41 @@ preselector.set_state('antenna')
 - `preselector.get_frequency_low_stopband(rf_path_index)`
 - `preselector.get_frequency_high_stopband(rf_path_index)`
 
-### Control
+#### Control
 
 - `preselector.set_state(rf_path_name)`
 
+## Development
+
+Set up a development environment using a tool like [Conda](https://docs.conda.io/en/latest/)
+or [venv](https://docs.python.org/3/library/venv.html#module-venv), with `python>=3.7`. Then,
+from the cloned directory, install the development dependencies by running:
+
+```bash
+pip install .[dev]
+```
+
+This will install the project itself, along with development dependencies for pre-commit
+hooks, building distributions, and running tests. Set up pre-commit, which runs auto-formatting
+and code-checking automatically when you make a commit, by running:
+
+```bash
+pre-commit install
+```
+
+### Building New Releases
+
+This project uses [flit](https://github.com/pypa/flit) as a backend. To build a new release
+(both wheel and sdist/tarball), first update the version number in
+[`src/its_preselector/__init__.py`], then run:
+
+```bash
+flit build
+```
+
 ## License
 
-See [LICENSE](LICENSE.md).
+See [LICENSE](LICENSE.md)
 
 ## Contact
 
