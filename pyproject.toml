@@ -54,8 +54,5 @@ dev = [
 "NTIA GitHub" = "https://github.com/NTIA"
 "ITS Website" = "https://its.ntia.gov"
 
-[tool.flit.sdist]
-exclude = ["doc/"]
-
 [tool.flit.module]
 name = "its_preselector"
