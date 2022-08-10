@@ -1,5 +1,10 @@
 # NTIA/ITS Preselector API
 
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/NTIA/Preselector?display_name=tag&sort=semver)
+![GitHub all releases](https://img.shields.io/github/downloads/NTIA/Preselector/total)
+![GitHub issues](https://img.shields.io/github/issues/NTIA/Preselector)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 This repository provides a general software API to control preselectors regardless of their
 components and control mechanisms.
 
@@ -15,15 +20,14 @@ This software will grow over time to support additional components and control m
 
 ## Introduction
 
- A preselector is a device, connected between an antenna and a signal analyzer, designed to
- improve the RF performance and capability of a sensor. As illustrated in the diagram below,
- it may include a variety of components, e.g., filters, amplifiers, calibration sources, and
- switches. An example preselector is shown in Figure 1. Just as the components within a preselector
- may change, so too may the way in which the switching is controlled.
+A preselector is a device, connected between an antenna and a signal analyzer, designed to
+improve the RF performance and capability of a sensor. As illustrated in the diagram below,
+it may include a variety of components, e.g., filters, amplifiers, calibration sources, and
+switches. An example preselector is shown in Figure 1. Just as the components within a preselector
+may change, so too may the way in which the switching is controlled.
 
 ![Preselector Diagram](/docs/img/preselector.png)
 <p style="text-align: center;"><figcaption align = "center"><b>Figure.1 - Example Preselector</b></figcaption></p>
-
 
 ## Installation
 
