@@ -1,6 +1,6 @@
 import unittest
 import json
-
+from pathlib import Path
 from its_preselector.web_relay_preselector import WebRelayPreselector
 
 
@@ -8,7 +8,8 @@ class MyTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        file = open('test_metadata.sigmf-meta')
+        fpath = Path(__file__).parent.resolve()
+        file = open(fpath / 'test_metadata.sigmf-meta')
         cls.sensor_def = json.load(file)
         file.close()
 

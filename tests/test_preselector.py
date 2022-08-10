@@ -1,21 +1,23 @@
 import unittest
 from its_preselector.web_relay_preselector import WebRelayPreselector
 import json
+from pathlib import Path
 
 
 class TestWebRelayPreselector(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        file = open('test_metadata.sigmf-meta')
+        fpath = Path(__file__).parent.resolve()
+        file = open(fpath / 'test_metadata.sigmf-meta')
         sensor_def = json.load(file)
         file.close()
         cls.preselector = WebRelayPreselector(sensor_def, {})
-        null_file = open('null_preselector.sigmf-meta')
+        null_file = open(fpath / 'null_preselector.sigmf-meta')
         null_def = json.load(null_file)
         null_file.close()
         cls.empty_preselector = WebRelayPreselector(null_def, {})
-        with open('sensor_definition.json', 'r') as f:
+        with open(fpath / 'sensor_definition.json', 'r') as f:
             sensor_def = json.load(f)
         cls.scos_preselector = WebRelayPreselector(sensor_def, {})
 
