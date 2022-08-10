@@ -14,7 +14,7 @@ A simple `set_state` method allows users to specify the state of the preselector
 key specified in the preselector config. Different switching control mechanisms are supported
 by extending the base `Preselector` class. Currently, this repository provides an implementation
 for a `WebRelayPreselector` that includes an [x310 WebRelay](https://www.controlbyweb.com/x310/).
-See below for additional details on using the `WebRelayPreselector`.  
+See below for additional details on using the `WebRelayPreselector`.
 
 This software will grow over time to support additional components and control mechanisms.
 
@@ -35,7 +35,7 @@ switches. An example preselector is shown in Figure 1. Just as the components wi
 may change, so too may the way in which the switching is controlled.
 
 ![Preselector Diagram](/docs/img/preselector.png)
-<p style="text-align: center;"><figcaption align = "center"><b>Figure.1 - Example Preselector</b></figcaption></p>
+<figcaption>Figure 1: Block diagram showing an example RF measurement system with a preselector.</figcaption>
 
 ## Usage
 
@@ -60,10 +60,18 @@ example config file for the `WebRelayPreselector` to describe how it works:
 
 ```json
 {
-  "base_url" : "http://192.168.130.32/state.xml",
-  "noise_diode_on" : "1State=1,2State=1,3State=0,4State=0",
-  "noise_diode_off" : "1State=0,2State=1,3State=0,4State=0",
-  "antenna" : "1State=0,2State=0,3State=0,4State=0"
+  "name": "preselector",
+  "base_url" : "http://192.168.1.2/state.xml",
+  "control_states": {
+      "noise_diode_on" : "1State=1,2State=1,3State=0,4State=0",
+      "noise_diode_off" : "1State=1,2State=0,3State=0,4State=0",
+      "antenna" : "1State=0,2State=0,3State=0,4State=0"
+  },
+  "status_states": {
+    "noise diode powered" : "relay2=1",
+    "antenna path enabled": "relay1=0",
+    "noise diode path enabled": "relay1=1",
+  }
 }
 ```
 
