@@ -79,6 +79,7 @@ class ControlByWebWebRelay(WebRelay):
         except:
             logger.error('Unable to get status')
         state['healthy'] = healthy
+        state['name'] = self.name
         return state
 
     def state_matches(self, relay_and_state, xml_root):
