@@ -1,13 +1,13 @@
 from abc import ABC, abstractmethod, abstractproperty
-
+from its_preselector.rf_path import RfPath
+from its_preselector.filter import Filter
 from its_preselector.amplifier import Amplifier
 from its_preselector.cal_source import CalSource
-from its_preselector.filter import Filter
 from its_preselector.hardware_spec import HardwareSpec
-from its_preselector.rf_path import RfPath
 
 
 class Preselector(ABC):
+
     def __init__(self, sigmf, config):
         self.amplifiers = []
         self.rf_paths = []
@@ -16,56 +16,44 @@ class Preselector(ABC):
         self.preselector_spec = []
         self.config = config
         try:
-            if "global" in sigmf:
-                self.__set_filters(
-                    sigmf["global"]["ntia-sensor:sensor"]["preselector"]["filters"]
-                )
+            if 'global' in sigmf:
+                self.__set_filters(sigmf['global']['ntia-sensor:sensor']['preselector']['filters'])
             else:
-                self.__set_filters(sigmf["preselector"]["filters"])
+                self.__set_filters(sigmf['preselector']['filters'])
         except KeyError:
             pass
 
         try:
-            if "global" in sigmf:
-                self.__set_amplifiers(
-                    sigmf["global"]["ntia-sensor:sensor"]["preselector"]["amplifiers"]
-                )
+            if 'global' in sigmf:
+                self.__set_amplifiers(sigmf['global']['ntia-sensor:sensor']['preselector']['amplifiers'])
             else:
-                self.__set_amplifiers(sigmf["preselector"]["amplifiers"])
+                self.__set_amplifiers(sigmf['preselector']['amplifiers'])
         except KeyError:
             pass
 
         try:
-            if "global" in sigmf:
-                self.__get_rf_paths(
-                    sigmf["global"]["ntia-sensor:sensor"]["preselector"]["rf_paths"]
-                )
+            if 'global' in sigmf:
+                self.__get_rf_paths(sigmf['global']['ntia-sensor:sensor']['preselector']['rf_paths'])
             else:
-                self.__get_rf_paths(sigmf["preselector"]["rf_paths"])
+                self.__get_rf_paths(sigmf['preselector']['rf_paths'])
         except KeyError:
             pass
 
         try:
-            if "global" in sigmf:
-                self.__set_cal_sources(
-                    sigmf["global"]["ntia-sensor:sensor"]["preselector"]["cal_sources"]
-                )
+            if 'global' in sigmf:
+                self.__set_cal_sources(sigmf['global']['ntia-sensor:sensor']['preselector']['cal_sources'])
             else:
-                self.__set_cal_sources(sigmf["preselector"]["cal_sources"])
+                self.__set_cal_sources(sigmf['preselector']['cal_sources'])
         except KeyError:
             pass
 
         try:
-            if "global" in sigmf:
+            if 'global' in sigmf:
                 self.preselector_spec = HardwareSpec(
-                    sigmf["global"]["ntia-sensor:sensor"]["preselector"][
-                        "preselector_spec"
-                    ]
-                )
+                    sigmf['global']['ntia-sensor:sensor']['preselector']['preselector_spec'])
             else:
                 self.preselector_spec = HardwareSpec(
-                    sigmf["preselector"]["preselector_spec"]
-                )
+                    sigmf['preselector']['preselector_spec'])
         except KeyError:
             pass
 
@@ -167,6 +155,7 @@ class Preselector(ABC):
     def get_sensor_value(self, sensor):
         pass
 
+
     @property
     @abstractmethod
     def id(self):
@@ -180,3 +169,4 @@ class Preselector(ABC):
     @abstractmethod
     def get_status(self) -> dict:
         pass
+
