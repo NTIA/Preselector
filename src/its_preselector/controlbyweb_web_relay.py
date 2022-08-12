@@ -65,6 +65,7 @@ class ControlByWebWebRelay(WebRelay):
         healthy = False
         try:
             response = self.get_state_xml()
+            logger.debug('status code: ' + str(response.status_code))
             healthy = response.status_code == requests.codes.ok
             if healthy:
                 state_xml = response.text
