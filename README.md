@@ -20,11 +20,11 @@ This software will grow over time to support additional components and control m
 
 ## Table of Contents
 
-- Introduction
-- Usage
-- Development
-- License
-- Contact
+- [Introduction](#introduction)
+- [Usage](#usage)
+- [Development](#development)
+- [License](#license)
+- [Contact](#contact)
 
 ## Introduction
 
