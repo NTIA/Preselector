@@ -129,7 +129,7 @@ class ControlByWebWebRelay(WebRelay):
 
     def get_state_xml(self):
         if self.base_url and self.base_url != '':
-            response = requests.get(self.base_url)
+            response = requests.get(self.base_url, timeout=1)
             return response
         else:
             raise Exception('base_url is None or blank')
