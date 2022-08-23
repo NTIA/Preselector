@@ -39,6 +39,7 @@ classifiers = [
 
 dependencies = [
     "requests>=2.25.1",
+    "defusedxml>=0.7.1"
 ]
 
 [project.optional-dependencies]

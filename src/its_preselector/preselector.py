@@ -1,15 +1,14 @@
 from abc import ABC, abstractmethod
 
-from its_preselector.configuration_exception import ConfigurationException
-from its_preselector.rf_path import RfPath
-from its_preselector.filter import Filter
 from its_preselector.amplifier import Amplifier
 from its_preselector.cal_source import CalSource
+from its_preselector.configuration_exception import ConfigurationException
+from its_preselector.filter import Filter
 from its_preselector.hardware_spec import HardwareSpec
+from its_preselector.rf_path import RfPath
 
 
 class Preselector(ABC):
-
     def __init__(self, sigmf: dict, config: dict):
         self.amplifiers = []
         self.rf_paths = {}
@@ -18,44 +17,56 @@ class Preselector(ABC):
         self.preselector_spec = []
         self.config = config
         try:
-            if 'global' in sigmf:
-                self.__set_filters(sigmf['global']['ntia-sensor:sensor']['preselector']['filters'])
+            if "global" in sigmf:
+                self.__set_filters(
+                    sigmf["global"]["ntia-sensor:sensor"]["preselector"]["filters"]
+                )
             else:
-                self.__set_filters(sigmf['preselector']['filters'])
+                self.__set_filters(sigmf["preselector"]["filters"])
         except KeyError:
             pass
 
         try:
-            if 'global' in sigmf:
-                self.__set_amplifiers(sigmf['global']['ntia-sensor:sensor']['preselector']['amplifiers'])
+            if "global" in sigmf:
+                self.__set_amplifiers(
+                    sigmf["global"]["ntia-sensor:sensor"]["preselector"]["amplifiers"]
+                )
             else:
-                self.__set_amplifiers(sigmf['preselector']['amplifiers'])
+                self.__set_amplifiers(sigmf["preselector"]["amplifiers"])
         except KeyError:
             pass
 
         try:
-            if 'global' in sigmf:
-                self.__get_rf_paths(sigmf['global']['ntia-sensor:sensor']['preselector']['rf_paths'])
+            if "global" in sigmf:
+                self.__get_rf_paths(
+                    sigmf["global"]["ntia-sensor:sensor"]["preselector"]["rf_paths"]
+                )
             else:
-                self.__get_rf_paths(sigmf['preselector']['rf_paths'])
+                self.__get_rf_paths(sigmf["preselector"]["rf_paths"])
         except KeyError:
             pass
 
         try:
-            if 'global' in sigmf:
-                self.__set_cal_sources(sigmf['global']['ntia-sensor:sensor']['preselector']['cal_sources'])
+            if "global" in sigmf:
+                self.__set_cal_sources(
+                    sigmf["global"]["ntia-sensor:sensor"]["preselector"]["cal_sources"]
+                )
             else:
-                self.__set_cal_sources(sigmf['preselector']['cal_sources'])
+                self.__set_cal_sources(sigmf["preselector"]["cal_sources"])
         except KeyError:
             pass
 
         try:
-            if 'global' in sigmf:
+            if "global" in sigmf:
                 self.preselector_spec = HardwareSpec(
-                    sigmf['global']['ntia-sensor:sensor']['preselector']['preselector_spec'])
+                    sigmf["global"]["ntia-sensor:sensor"]["preselector"][
+                        "preselector_spec"
+                    ]
+                )
             else:
                 self.preselector_spec = HardwareSpec(
-                    sigmf['preselector']['preselector_spec'])
+                    sigmf["preselector"]["preselector_spec"]
+                )
         except KeyError:
             pass
 
@@ -94,7 +105,9 @@ class Preselector(ABC):
         else:
             raise ConfigurationException(
                 "Unable to get frequency_low for the passband filter. There is no RF_PATH named {path_name}".format(
-                    path_name=rf_path_name))
+                    path_name=rf_path_name
+                )
+            )
 
     def get_frequency_high_passband(self, rf_path_name: str) -> float:
         """
@@ -111,7 +124,9 @@ class Preselector(ABC):
         else:
             raise ConfigurationException(
                 "Unable to get frequency_high for the passband filter. There is no RF_PATH named {path_name}".format(
-                    path_name=rf_path_name))
+                    path_name=rf_path_name
+                )
+            )
 
     def get_frequency_low_stopband(self, rf_path_name: str):
         """
@@ -125,10 +140,16 @@ class Preselector(ABC):
             preselector_filter = self.__get_filter(filter_id)
             if preselector_filter:
                 return preselector_filter.frequency_low_stopband
+            else:
+                raise ConfigurationException(
+                    "Filger {id} is None.".format(id=filter_id)
+                )
         else:
             raise ConfigurationException(
                 "Unable to get frequency_low for the stopband filter. There is no RF_PATH named {path_name}".format(
-                    path_name=rf_path_name))
+                    path_name=rf_path_name
+                )
+            )
 
     def get_frequency_high_stopband(self, rf_path_name: str) -> float:
         """
@@ -145,7 +166,9 @@ class Preselector(ABC):
         else:
             raise ConfigurationException(
                 "Unable to get frequency_high for the stopband filter. There is no RF_PATH named {path_name}".format(
-                    path_name=rf_path_name))
+                    path_name=rf_path_name
+                )
+            )
 
     def get_amplifier_gain(self, rf_path_name: str) -> float:
         """
@@ -159,10 +182,14 @@ class Preselector(ABC):
             amplifier = self.__get_amplifier(amp_id)
             if amplifier:
                 return amplifier.gain
+            else:
+                raise ConfigurationException("Amplifier {id} is None".format(amp_id))
         else:
             raise ConfigurationException(
                 "Unable to get amplifier gain. There is no RF_PATH named {path_name}".format(
-                    path_name=rf_path_name))
+                    path_name=rf_path_name
+                )
+            )
 
     def get_amplifier_noise_figure(self, rf_path_name: str) -> float:
         """
@@ -176,10 +203,14 @@ class Preselector(ABC):
             amplifier = self.__get_amplifier(amp_id)
             if amplifier:
                 return amplifier.noise_figure
+            else:
+                raise ConfigurationException("Amplifier {id} is None".format(id=amp_id))
         else:
             raise ConfigurationException(
                 "Unable to get amplifier noise figure. There is no RF_PATH named {path_name}".format(
-                    path_name=rf_path_name))
+                    path_name=rf_path_name
+                )
+            )
 
     @abstractmethod
     def set_state(self, state_name: str) -> None:
@@ -195,7 +226,7 @@ class Preselector(ABC):
                 if f.filter_spec.id == filter_id:
                     return f
 
-        return None
+        raise ConfigurationException("Filter {id} does not exist.".format(id=filter_id))
 
     def __get_amplifier(self, amp_id):
         if amp_id:
@@ -203,7 +234,7 @@ class Preselector(ABC):
                 if amp.amplifier_spec.id == amp_id:
                     return amp
 
-        return None
+        raise ConfigurationException("Amplifier {id} does not exist.".format(id=amp_id))
 
     @abstractmethod
     def get_sensor_value(self, sensor) -> str:
