@@ -123,6 +123,10 @@ class Preselector(ABC):
             preselector_filter = self.__get_filter(filter_id)
             if preselector_filter:
                 return preselector_filter.frequency_high_passband
+            else:
+                raise ConfigurationException(
+                    "Filter {id} is None.".format(id=filter_id)
+                )
         else:
             raise ConfigurationException(
                 "Unable to get frequency_high for the passband filter. There is no RF_PATH named {path_name}".format(
