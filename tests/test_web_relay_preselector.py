@@ -1,5 +1,6 @@
 import unittest
 import json
+from pathlib import Path
 
 from its_preselector.configuration_exception import ConfigurationException
 from its_preselector.web_relay_preselector import WebRelayPreselector
@@ -9,7 +10,8 @@ class MyTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        file = open('test_metadata.sigmf-meta')
+        fpath = Path(__file__).parent.resolve()
+        file = open(fpath / 'test_metadata.sigmf-meta')
         cls.sensor_def = json.load(file)
         file.close()
 
@@ -17,7 +19,7 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(ConfigurationException):
             preselector = WebRelayPreselector(self.sensor_def,
                                               {'base_url': 'http://127.0.0.1',
-                                               'control_states':{'antenna': '1State=0,2State=0,3State=0,4State=0'}})
+                                               'control_states': {'antenna': '1State=0,2State=0,3State=0,4State=0'}})
 
     def test_no_base_url(self):
         with self.assertRaises(ConfigurationException):
@@ -37,13 +39,14 @@ class MyTestCase(unittest.TestCase):
                                                'antenna': '1State=0,2State=0,3State=0,4State=0'})
 
     def test_invalid_base_url(self):
-        preselector = WebRelayPreselector(self.sensor_def, {'name': 'invalid base url', 'base_url': 'http://badpreselector.gov',
-                                                            'antenna': '1State=0,2State=0,3State=0,4State=0'})
+        preselector = WebRelayPreselector(self.sensor_def,
+                                          {'name': 'invalid base url', 'base_url': 'http://badpreselector.gov',
+                                           'antenna': '1State=0,2State=0,3State=0,4State=0'})
         with self.assertRaises(Exception):
             preselector.set_state('antenna')
 
     def test_healthy_false(self):
-        preselector =WebRelayPreselector(self.sensor_def, {
+        preselector = WebRelayPreselector(self.sensor_def, {
             'name': 'preselector',
             'base_url': 'http://bad_preselector.gov',
             'control_states': {"noise_diode_off": "1State=1,2State=0,3State=0,4State=0"},
