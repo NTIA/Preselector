@@ -8,7 +8,7 @@
   "status_states":{
     "noise diode powered" : "relay2=1",
     "antenna path enabled": "relay1=0",
-    "noise diode path enabled": "relay1=1",
+    "noise diode path enabled": "relay1=1"
   }
 
 }

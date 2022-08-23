@@ -11,11 +11,11 @@ class TestFilter(unittest.TestCase):
         file = open(fpath / 'test_metadata.sigmf-meta')
         sensor_def = json.load(file)
         file.close()
-        cls.preselector = WebRelayPreselector(sensor_def, {})
+        cls.preselector = WebRelayPreselector(sensor_def, {'base_url':'127.0.0.1', 'name': 'test_switch'})
         null_file = open(fpath / 'null_preselector.sigmf-meta')
         null_def = json.load(null_file)
         null_file.close()
-        cls.empty_preselector = WebRelayPreselector(null_def, {})
+        cls.empty_preselector = WebRelayPreselector(null_def, {'base_url':'127.0.0.1', 'name': 'test_switch'})
 
     def test_valid_filter_spec(self):
         spec = self.preselector.filters[0].filter_spec

@@ -11,11 +11,11 @@ class TestCalSource(unittest.TestCase):
         file = open(fpath / 'test_metadata.sigmf-meta')
         sensor_def = json.load(file)
         file.close()
-        cls.preselector = WebRelayPreselector(sensor_def, {})
+        cls.preselector = WebRelayPreselector(sensor_def, {'base_url': 'http://127.0.0.1', 'name': 'test_preselector'})
         null_file = open(fpath / 'null_preselector.sigmf-meta')
         null_def = json.load(null_file)
         null_file.close()
-        cls.empty_preselector = WebRelayPreselector(null_def, {})
+        cls.empty_preselector = WebRelayPreselector(null_def, {'base_url': 'http://127.0.0.1', 'name': 'test_preselector'})
 
     def test_valid_cal_source(self):
         cal_sources = self.preselector.cal_sources

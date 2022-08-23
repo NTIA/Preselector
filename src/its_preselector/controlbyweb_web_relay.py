@@ -1,3 +1,4 @@
+from its_preselector.configuration_exception import ConfigurationException
 from its_preselector.web_relay import WebRelay
 import logging
 import requests
@@ -8,10 +9,22 @@ logger = logging.getLogger(__name__)
 
 class ControlByWebWebRelay(WebRelay):
 
-    def __init__(self, config):
+    def __init__(self, config: dict):
         super().__init__(config)
-        if 'base_url' in config:
+        if 'base_url' not in config:
+            raise ConfigurationException("Config must include base_url.")
+        elif config['base_url'] is None:
+            raise ConfigurationException('base_url cannot be None.')
+        elif config['base_url'] == '':
+            raise ConfigurationException('base_url cannot be blank.')
+        else:
             self.base_url = config['base_url']
+        if 'name' not in config:
+            raise ConfigurationException('Config must include name.')
+        elif config['name'] is None:
+            raise ConfigurationException('name cannot be None.')
+        elif config['name'] == '':
+            raise ConfigurationException('name cannot be blank.')
 
     def get_sensor_value(self, sensor_num):
         sensor_num_string = str(sensor_num)
