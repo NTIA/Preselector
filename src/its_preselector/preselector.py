@@ -91,10 +91,10 @@ class Preselector(ABC):
             preselector_filter = self.__get_filter(filter_id)
             if preselector_filter:
                 return preselector_filter.frequency_low_passband
-            else:
-                raise ConfigurationException(
-                    "Unable to get frequency_low for the passband filter. There is no RF_PATH named {path_name}".format(
-                        path_name=rf_path_name))
+        else:
+            raise ConfigurationException(
+                "Unable to get frequency_low for the passband filter. There is no RF_PATH named {path_name}".format(
+                    path_name=rf_path_name))
 
     def get_frequency_high_passband(self, rf_path_name: str) -> float:
         """
