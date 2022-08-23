@@ -58,7 +58,7 @@ class MyTestCase(unittest.TestCase):
                 "measurements": 'relay1=0,relay2=0,relay3=0,relay4=0'
             }})
         status = preselector.get_status()
-        self.assertFalse(status['web_relay_healthy'])
+        self.assertFalse(status['healthy'])
 
 
 if __name__ == '__main__':

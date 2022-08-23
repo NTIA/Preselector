@@ -24,16 +24,16 @@ class TestRFPaths(unittest.TestCase):
         self.assertEqual(0, len(self.empty_preselector.rf_paths))
 
     def test_name(self):
-        self.assertEqual('noise_diode_on', self.preselector.rf_paths[0].name)
+        self.assertEqual('noise_diode_on', self.preselector.rf_paths["noise_diode_on"].name)
 
     def test_cal_source_id(self):
-        self.assertEqual('SG53400067', self.preselector.rf_paths[0].cal_source_id)
+        self.assertEqual('SG53400067', self.preselector.rf_paths["noise_diode_on"].cal_source_id)
 
     def test_filter_id(self):
-        self.assertEqual('13FV40, SN 9', self.preselector.rf_paths[0].filter_id)
+        self.assertEqual('13FV40, SN 9', self.preselector.rf_paths["noise_diode_on"].filter_id)
 
     def test_amplifier_id(self):
-        self.assertEqual('1502150', self.preselector.rf_paths[0].amplifier_id)
+        self.assertEqual('1502150', self.preselector.rf_paths["noise_diode_on"].amplifier_id)
 
 
 if __name__ == '__main__':

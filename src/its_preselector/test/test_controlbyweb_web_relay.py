@@ -47,7 +47,8 @@ class ControlByWebWebRelayTests(unittest.TestCase):
 
     def test_get_state_from_config(self):
         root = ET.fromstring(self.state)
-        web_relay = ControlByWebWebRelay({'control_states': {"noise_diode_off": "1State=1,2State=0,3State=0,4State=0"},
+        web_relay = ControlByWebWebRelay({'name': 'test_preselector',
+                                          'control_states': {"noise_diode_off": "1State=1,2State=0,3State=0,4State=0"},
                                           'status_states': {
                                               "noise diode powered": "relay2=1",
                                               "antenna path enabled": "relay1=0",
@@ -60,7 +61,7 @@ class ControlByWebWebRelayTests(unittest.TestCase):
         type(response).text = PropertyMock(return_value = self.state)
         web_relay.get_state_xml = MagicMock(return_value=response)
         states = web_relay.get_status()
-        self.assertEqual(len(states.keys()), 6)
+        self.assertEqual(len(states.keys()), 7)
         self.assertTrue(states['noise diode powered'])
         self.assertFalse(states['antenna path enabled'])
         self.assertFalse(states['measurements'])
@@ -68,7 +69,8 @@ class ControlByWebWebRelayTests(unittest.TestCase):
         self.assertTrue(states['noise on'])
 
     def test_get_status(self):
-        web_relay = ControlByWebWebRelay({'control_states': {"noise_diode_off": "1State=1,2State=0,3State=0,4State=0"},
+        web_relay = ControlByWebWebRelay({'name': 'test preselector',
+                                          'control_states': {"noise_diode_off": "1State=1,2State=0,3State=0,4State=0"},
                                           'status_states': {
                                               "noise diode powered": "relay2=1",
                                               "antenna path enabled": "relay1=0",
@@ -81,7 +83,7 @@ class ControlByWebWebRelayTests(unittest.TestCase):
         type(response).text = PropertyMock(return_value=self.state)
         web_relay.get_state_xml = MagicMock(return_value=response)
         states = web_relay.get_status()
-        self.assertEqual(len(states.keys()), 6)
+        self.assertEqual(len(states.keys()), 7)
         self.assertTrue(states['noise diode powered'])
         self.assertFalse(states['antenna path enabled'])
         self.assertFalse(states['measurements'])

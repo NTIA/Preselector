@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 class ControlByWebWebRelay(WebRelay):
 
-    def __init__(self, config):
+    def __init__(self, config: dict):
         super().__init__(config)
         if 'base_url' in config:
             self.base_url = config['base_url']
