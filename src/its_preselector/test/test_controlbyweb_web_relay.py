@@ -29,7 +29,7 @@ class ControlByWebWebRelayTests(unittest.TestCase):
                     '</datavalues>'''
 
     def test_is_enabled(self):
-        web_relay = ControlByWebWebRelay({})
+        web_relay = ControlByWebWebRelay({'base_url': '127.0.0.1', 'name': 'test_switch'})
         relay1_enabled = web_relay.is_enabled(self.state, 'relay1')
         self.assertTrue(relay1_enabled)
         relay3_enabled = web_relay.is_enabled(self.state, 'relay3')
@@ -42,12 +42,14 @@ class ControlByWebWebRelayTests(unittest.TestCase):
 
     def test_state_matches(self):
         root = ET.fromstring(self.state)
-        web_relay = ControlByWebWebRelay({'control_states': {"noise_diode_off": "1State=1,2State=0,3State=0,4State=0"}})
+        web_relay = ControlByWebWebRelay({'base_url': '127.0.0.1', 'name': 'test_switch',
+                                          'control_states': {"noise_diode_off": "1State=1,2State=0,3State=0,4State=0"}})
         self.assertTrue(web_relay.state_matches('relay1=1', root))
 
     def test_get_state_from_config(self):
         root = ET.fromstring(self.state)
-        web_relay = ControlByWebWebRelay({'name': 'test_preselector',
+        web_relay = ControlByWebWebRelay({'base_url': '127.0.0.1',
+                                          'name': 'test_preselector',
                                           'control_states': {"noise_diode_off": "1State=1,2State=0,3State=0,4State=0"},
                                           'status_states': {
                                               "noise diode powered": "relay2=1",
@@ -58,7 +60,7 @@ class ControlByWebWebRelayTests(unittest.TestCase):
                                           }})
         response = Response()
         response.status_code = codes.ok
-        type(response).text = PropertyMock(return_value = self.state)
+        type(response).text = PropertyMock(return_value=self.state)
         web_relay.get_state_xml = MagicMock(return_value=response)
         states = web_relay.get_status()
         self.assertEqual(len(states.keys()), 7)
@@ -69,7 +71,8 @@ class ControlByWebWebRelayTests(unittest.TestCase):
         self.assertTrue(states['noise on'])
 
     def test_get_status(self):
-        web_relay = ControlByWebWebRelay({'name': 'test preselector',
+        web_relay = ControlByWebWebRelay({'base_url': '127.0.0.1',
+                                          'name': 'test preselector',
                                           'control_states': {"noise_diode_off": "1State=1,2State=0,3State=0,4State=0"},
                                           'status_states': {
                                               "noise diode powered": "relay2=1",

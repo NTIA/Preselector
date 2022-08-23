@@ -1,4 +1,6 @@
 import logging
+
+from its_preselector.configuration_exception import ConfigurationException
 from its_preselector.controlbyweb_web_relay import ControlByWebWebRelay
 from its_preselector.preselector import Preselector
 

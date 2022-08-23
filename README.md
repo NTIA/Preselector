@@ -66,13 +66,17 @@ for the `WebRelayPreselector` to describe how it works:
 }
 ```
 
-The `base_url` key is the only required key for the `WebRelayPreselector` and should map to the
-base URL to interact with the WebRelay (see [https://www.controlbyweb.com/x310](https://www.controlbyweb.com/x310)
-for more info). The other keys should correspond to RF paths documented in the SigMF metadata.
-Each of the entries in the config provide mappings to the associated web relay input states and
-every RFPath defined in the sensor definition json file should have an entry in the preselector
-config. The keys in the dictionary may use the name of the RFPath or the index of the RFPath in
-the RFPaths array.
+The `base_url` and `name` keys are the only required keys for the `WebRelayPreselector` and should 
+map to the base URL to interact with the WebRelay 
+(see [https://www.controlbyweb.com/x310](https://www.controlbyweb.com/x310)
+for more info). The keys within the control_states key should correspond to RF paths documented 
+in the SigMF metadata. The keys within the status_states should map to the RF paths documented in the SigMF metadata, or
+to understandable states of the preselector for which it is desired to determine whether they are enabled or
+disabled. The status method of the preselector will provide each of the keys specified in the status_states entry mapped
+to a boolean indicating whether the preselector states match those specified in the mapping. Each of the entries in the 
+config provide mappings to the associated web relay input states and every RFPath defined in the sensor definition json 
+file should have an entry in the preselector config. The keys in the dictionary may use the name of the RFPath or the 
+index of the RFPath in the RFPaths array.
 
 In this example, there are `noise_diode_on` and `noise_diode_off` keys to correspond to the
 preselector paths to turn the noise diode on and off, and an antenna key to indicate the web

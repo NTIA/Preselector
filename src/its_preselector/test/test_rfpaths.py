@@ -10,11 +10,11 @@ class TestRFPaths(unittest.TestCase):
         file = open('test_metadata.sigmf-meta')
         sensor_def = json.load(file)
         file.close()
-        cls.preselector = WebRelayPreselector(sensor_def, {})
+        cls.preselector = WebRelayPreselector(sensor_def, {'base_url':'127.0.0.1', 'name': 'test_switch'})
         null_file = open('null_preselector.sigmf-meta')
         null_def = json.load(null_file)
         null_file.close()
-        cls.empty_preselector = WebRelayPreselector(null_def, {})
+        cls.empty_preselector = WebRelayPreselector(null_def, {'base_url':'127.0.0.1', 'name': 'test_switch'})
 
     def test_number_valid_paths(self):
         self.assertEqual(2, len(self.preselector.rf_paths))

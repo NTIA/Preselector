@@ -12,14 +12,14 @@ class TestWebRelayPreselector(unittest.TestCase):
         file = open('test_metadata.sigmf-meta')
         sensor_def = json.load(file)
         file.close()
-        cls.preselector = WebRelayPreselector(sensor_def, {})
+        cls.preselector = WebRelayPreselector(sensor_def, {'base_url':'127.0.0.1', 'name': 'test_switch'})
         null_file = open('null_preselector.sigmf-meta')
         null_def = json.load(null_file)
         null_file.close()
-        cls.empty_preselector = WebRelayPreselector(null_def, {})
+        cls.empty_preselector = WebRelayPreselector(null_def, {'base_url':'127.0.0.1', 'name': 'test_switch'})
         with open('sensor_definition.json', 'r') as f:
             sensor_def = json.load(f)
-        cls.scos_preselector = WebRelayPreselector(sensor_def, {})
+        cls.scos_preselector = WebRelayPreselector(sensor_def, {'name': 'scos preselector', 'base_url': 'http://127.0.0.1'})
 
     def test_valid_preselector(self):
         self.assertIsNotNone(self.preselector)
