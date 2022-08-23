@@ -139,9 +139,9 @@ class Preselector(ABC):
         if rf_path_name in self.rf_paths:
             path = self.rf_paths[rf_path_name]
             filter_id = path.filter_id
-            preselctor_filter = self.__get_filter(filter_id)
-            if preselctor_filter:
-                return preselctor_filter.frequency_high_stopband
+            preselector_filter = self.__get_filter(filter_id)
+            if preselector_filter:
+                return preselector_filter.frequency_high_stopband
         else:
             raise ConfigurationException(
                 "Unable to get frequency_high for the stopband filter. There is no RF_PATH named {path_name}".format(
