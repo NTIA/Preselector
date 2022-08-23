@@ -8,13 +8,12 @@ logger = logging.getLogger(__name__)
 
 
 class WebRelayPreselector(Preselector):
-
     def __init__(self, sigmf: dict, config: dict):
         super().__init__(sigmf, config)
         self.web_relay = ControlByWebWebRelay(config)
 
     def set_state(self, state_name: str):
-        self.web_relay.set_state(i)
+        self.web_relay.set_state(state_name)
 
     def get_sensor_value(self, sensor_num) -> str:
         return self.web_relay.get_sensor_value(sensor_num)
