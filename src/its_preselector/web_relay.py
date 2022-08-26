@@ -5,7 +5,6 @@ class WebRelay(ABC):
     def __init__(self, config):
         self.config = config
 
-
     @abstractmethod
     def get_sensor_value(sensor: str) -> str:
         """
@@ -15,7 +14,6 @@ class WebRelay(ABC):
         """
         pass
 
-
     @abstractmethod
     def set_state(self, state_key: str) -> None:
         """
@@ -24,7 +22,6 @@ class WebRelay(ABC):
         :return: None
         """
         pass
-
 
     @abstractmethod
     def healthy(self) -> bool:
