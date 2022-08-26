@@ -1,54 +1,33 @@
 import logging
+
+from its_preselector.configuration_exception import ConfigurationException
+from its_preselector.controlbyweb_web_relay import ControlByWebWebRelay
 from its_preselector.preselector import Preselector
-import requests
-import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 
 
 class WebRelayPreselector(Preselector):
-
-    def __init__(self, sigmf, config):
+    def __init__(self, sigmf: dict, config: dict):
         super().__init__(sigmf, config)
-        if 'base_url' in config:
-            self.base_url = config['base_url']
+        self.web_relay = ControlByWebWebRelay(config)
 
-    def set_state(self, i):
-        key = str(i)
-        if key in self.config:
-            switches = self.config[str(i)].split(',')
-            if self.base_url and self.base_url != '':
-                for i in range(len(switches)):
-                    command = self.base_url + '?relay' + switches[i]
-                    logger.debug(command)
-                    response = requests.get(command)
-                    if response.status_code != requests.codes.ok:
-                        raise Exception('Unable to set preselector state. Verify configuration and connectivity.')
-            else:
-                raise Exception('base_url is None or blank')
-        else:
-            raise Exception("RF path " + key + " configuration does not exist.")
+    def set_state(self, state_name: str):
+        self.web_relay.set_state(state_name)
 
-    def get_sensor_value(self, sensor_num):
-        sensor_num_string =  str(sensor_num)
-        response = requests.get(self.base_url)
-        #Check for X310 xml format first.
-        sensor_tag = 'sensor' + sensor_num_string
-        root = ET.fromstring(response.text)
-        sensor = root.find(sensor_tag)
-        if sensor is None:
-            #Didn't find X310 format sensor so check for X410 format. 
-            sensor_tag = 'oneWireSensor' + sensor_num_string
-            sensor = root.find(sensor_tag)
-        if sensor is None:
-            return None
-        else:
-            return sensor.text
+    def get_sensor_value(self, sensor_num) -> str:
+        return self.web_relay.get_sensor_value(sensor_num)
 
-    def healthy(self):
-        try:
-            response = requests.get(self.base_url)
-            return response.status_code == requests.codes.ok
-        except:
-            logger.error("Unable to connect to preselector")
-        return False
+    def healthy(self) -> bool:
+        return self.web_relay.healthy()
+
+    @property
+    def id(self):
+        return self.web_relay.base_url
+
+    @property
+    def name(self):
+        return self.web_relay.name
+
+    def get_status(self):
+        return self.web_relay.get_status()
