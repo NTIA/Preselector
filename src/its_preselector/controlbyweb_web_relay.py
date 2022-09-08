@@ -51,6 +51,12 @@ class ControlByWebWebRelay(WebRelay):
             return sensor.text
 
     def set_state(self, key):
+        """
+        Set the state of the relay.
+        :param key: The key for the desired state or states as defined in the config.
+        :return: None
+        :raises: requests.Timeout exception
+        """
         if key in self.config["control_states"]:
             switches = self.config["control_states"][str(key)].split(",")
             if self.base_url and self.base_url != "":
@@ -67,7 +73,11 @@ class ControlByWebWebRelay(WebRelay):
         else:
             raise Exception("RF path " + key + " configuration does not exist.")
 
-    def healthy(self):
+    def healthy(self) -> bool:
+        """
+        Check if the relay can be reached.
+        :return: True if the relay can be reached, or False if it cannot be reached.
+        """
         try:
             response = requests.get(self.base_url, timeout=self.timeout)
             return response.status_code == requests.codes.ok

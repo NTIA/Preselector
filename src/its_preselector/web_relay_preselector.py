@@ -20,6 +20,12 @@ class WebRelayPreselector(Preselector):
         self.web_relay = ControlByWebWebRelay(config, timeout)
 
     def set_state(self, state_name: str):
+        """
+        Set the state of the preselector.
+        :param state_name: The key for the desired state or states as defined in the config.
+        :return: None
+        :raises: requests.Timeout exception
+        """
         self.web_relay.set_state(state_name)
 
     def get_sensor_value(self, sensor_num) -> str:
