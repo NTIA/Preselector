@@ -2,8 +2,13 @@ from abc import ABC, abstractmethod
 
 
 class WebRelay(ABC):
-    def __init__(self, config):
+    def __init__(self, config: dict, timeout: int = 1):
+        """
+        :param config: The web relay configuration dictionary.
+        :param timeout: The timeout in seconds that will be used in any web requests.
+        """
         self.config = config
+        self.timeout = timeout
 
     @abstractmethod
     def get_sensor_value(sensor: str) -> str:
