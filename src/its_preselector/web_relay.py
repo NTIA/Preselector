@@ -2,9 +2,9 @@ from abc import ABC, abstractmethod
 
 
 class WebRelay(ABC):
-    def __init__(self, config):
+    def __init__(self, config, timeout: int):
         self.config = config
-
+        self.timeout = timeout
 
     @abstractmethod
     def get_sensor_value(sensor: str) -> str:
@@ -15,7 +15,6 @@ class WebRelay(ABC):
         """
         pass
 
-
     @abstractmethod
     def set_state(self, state_key: str) -> None:
         """
@@ -24,7 +23,6 @@ class WebRelay(ABC):
         :return: None
         """
         pass
-
 
     @abstractmethod
     def healthy(self) -> bool:

@@ -8,9 +8,9 @@ logger = logging.getLogger(__name__)
 
 
 class WebRelayPreselector(Preselector):
-    def __init__(self, sigmf: dict, config: dict):
+    def __init__(self, sigmf: dict, config: dict, timeout: int = 1):
         super().__init__(sigmf, config)
-        self.web_relay = ControlByWebWebRelay(config)
+        self.web_relay = ControlByWebWebRelay(config, timeout)
 
     def set_state(self, state_name: str):
         self.web_relay.set_state(state_name)

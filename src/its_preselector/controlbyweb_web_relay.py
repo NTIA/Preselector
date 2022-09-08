@@ -10,8 +10,8 @@ logger = logging.getLogger(__name__)
 
 
 class ControlByWebWebRelay(WebRelay):
-    def __init__(self, config: dict):
-        super().__init__(config)
+    def __init__(self, config: dict, timeout: int = 1):
+        super().__init__(config, timeout)
         if "base_url" not in config:
             raise ConfigurationException("Config must include base_url.")
         elif config["base_url"] is None:
@@ -52,7 +52,7 @@ class ControlByWebWebRelay(WebRelay):
                 for i in range(len(switches)):
                     command = self.base_url + "?relay" + switches[i]
                     logger.debug(command)
-                    response = requests.get(command)
+                    response = requests.get(command, timeout=self.timeout)
                     if response.status_code != requests.codes.ok:
                         raise Exception(
                             "Unable to set preselector state. Verify configuration and connectivity."
@@ -64,7 +64,7 @@ class ControlByWebWebRelay(WebRelay):
 
     def healthy(self):
         try:
-            response = requests.get(self.base_url)
+            response = requests.get(self.base_url, timeout=self.timeout)
             return response.status_code == requests.codes.ok
         except:
             logger.error("Unable to connect to preselector")
@@ -155,7 +155,7 @@ class ControlByWebWebRelay(WebRelay):
 
     def get_state_xml(self):
         if self.base_url and self.base_url != "":
-            response = requests.get(self.base_url, timeout=1)
+            response = requests.get(self.base_url, timeout=self.timeout)
             return response
         else:
             raise Exception("base_url is None or blank")

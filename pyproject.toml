@@ -7,7 +7,7 @@ name = "its-preselector"
 dynamic = ["version"]
 description = "A package to control the ITS web relay-based preselector"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 license = { file = "LICENSE.md" }
 
 authors = [
