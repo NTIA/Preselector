@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 
 class WebRelay(ABC):
-    def __init__(self, config, timeout: int):
+    def __init__(self, config, timeout: int = 1):
         self.config = config
         self.timeout = timeout
 
