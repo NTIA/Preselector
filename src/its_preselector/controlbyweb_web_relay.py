@@ -10,8 +10,13 @@ logger = logging.getLogger(__name__)
 
 
 class ControlByWebWebRelay(WebRelay):
-    def __init__(self, config: dict):
-        super().__init__(config)
+    def __init__(self, config: dict, timeout: int = 1):
+        """
+        :param config: The web relay configuration dictionary. The dictionary must
+        include "name" and "base_url" entries.
+        :param timeout: The timeout in seconds that will be used in any web requests.
+        """
+        super().__init__(config, timeout)
         if "base_url" not in config:
             raise ConfigurationException("Config must include base_url.")
         elif config["base_url"] is None:
@@ -46,13 +51,19 @@ class ControlByWebWebRelay(WebRelay):
             return sensor.text
 
     def set_state(self, key):
+        """
+        Set the state of the relay.
+        :param key: The key for the desired state or states as defined in the config.
+        :return: None
+        :raises: requests.Timeout exception
+        """
         if key in self.config["control_states"]:
             switches = self.config["control_states"][str(key)].split(",")
             if self.base_url and self.base_url != "":
                 for i in range(len(switches)):
                     command = self.base_url + "?relay" + switches[i]
                     logger.debug(command)
-                    response = requests.get(command)
+                    response = requests.get(command, timeout=self.timeout)
                     if response.status_code != requests.codes.ok:
                         raise Exception(
                             "Unable to set preselector state. Verify configuration and connectivity."
@@ -62,9 +73,13 @@ class ControlByWebWebRelay(WebRelay):
         else:
             raise Exception("RF path " + key + " configuration does not exist.")
 
-    def healthy(self):
+    def healthy(self) -> bool:
+        """
+        Check if the relay can be reached.
+        :return: True if the relay can be reached, or False if it cannot be reached.
+        """
         try:
-            response = requests.get(self.base_url)
+            response = requests.get(self.base_url, timeout=self.timeout)
             return response.status_code == requests.codes.ok
         except:
             logger.error("Unable to connect to preselector")
@@ -155,7 +170,7 @@ class ControlByWebWebRelay(WebRelay):
 
     def get_state_xml(self):
         if self.base_url and self.base_url != "":
-            response = requests.get(self.base_url, timeout=1)
+            response = requests.get(self.base_url, timeout=self.timeout)
             return response
         else:
             raise Exception("base_url is None or blank")
