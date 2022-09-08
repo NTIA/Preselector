@@ -11,6 +11,11 @@ logger = logging.getLogger(__name__)
 
 class ControlByWebWebRelay(WebRelay):
     def __init__(self, config: dict, timeout: int = 1):
+        """
+        :param config: The web relay configuration dictionary. The dictionary must
+        include "name" and "base_url" entries.
+        :param timeout: The timeout in seconds that will be used in any web requests.
+        """
         super().__init__(config, timeout)
         if "base_url" not in config:
             raise ConfigurationException("Config must include base_url.")
