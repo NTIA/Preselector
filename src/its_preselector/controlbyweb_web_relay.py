@@ -10,11 +10,12 @@ logger = logging.getLogger(__name__)
 
 
 class ControlByWebWebRelay(WebRelay):
-    def __init__(self, config: dict, timeout: int = 1):
+    def __init__(self, config: dict, timeout: int = 1, retries=3):
         """
         :param config: The web relay configuration dictionary. The dictionary must
         include "name" and "base_url" entries.
         :param timeout: The timeout in seconds that will be used in any web requests.
+        :param retries: The total number of request attempts to make to set a state in the web relay.
         """
         super().__init__(config, timeout)
         if "base_url" not in config:
@@ -31,6 +32,7 @@ class ControlByWebWebRelay(WebRelay):
             raise ConfigurationException("name cannot be None.")
         elif config["name"] == "":
             raise ConfigurationException("name cannot be blank.")
+        self.retries = retries
 
     def get_sensor_value(self, sensor_num):
         sensor_num_string = str(sensor_num)
@@ -64,6 +66,14 @@ class ControlByWebWebRelay(WebRelay):
                     command = self.base_url + "?relay" + switches[i]
                     logger.debug(command)
                     response = requests.get(command, timeout=self.timeout)
+                    count = 1
+                    while (
+                        response.status_code != requests.codes.ok
+                        and count <= self.retries
+                    ):
+                        logger.debug("Failed to set state. Retrying...")
+                        response = requests.get(command, timeout=self.timeout)
+                        count = count + 1
                     if response.status_code != requests.codes.ok:
                         raise Exception(
                             "Unable to set preselector state. Verify configuration and connectivity."
