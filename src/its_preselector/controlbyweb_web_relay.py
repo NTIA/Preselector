@@ -17,7 +17,7 @@ class ControlByWebWebRelay(WebRelay):
         :param config: The web relay configuration dictionary. The dictionary must
         include "name" and "base_url" entries.
         :param timeout: The timeout in seconds that will be used in any web requests.
-        :param retries: The total number of request attempts to make to set a state in the web relay.
+        :param retries: The total number of retry attempts to make in the event of a failure to set_state, get_sensor_value, or check health.
         """
         super().__init__(config, timeout)
         if "base_url" not in config:
