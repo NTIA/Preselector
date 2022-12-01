@@ -38,12 +38,7 @@ class ControlByWebWebRelay(WebRelay):
 
     def get_sensor_value(self, sensor_num):
         sensor_num_string = str(sensor_num)
-        session = requests.Session()
-        retry = Retry(connect=self.retries, backoff_factor=0.1)
-        adapter = HTTPAdapter(max_retries=retry)
-        session.mount("http://", adapter)
-        session.mount("https://", adapter)
-        response = session.get(self.base_url, timeout=self.timeout)
+        response = self.request_with_retry(self.base_url)
         # Check for X310 xml format first.
         sensor_tag = "sensor" + sensor_num_string
         root = ET.fromstring(response.text)
@@ -72,12 +67,7 @@ class ControlByWebWebRelay(WebRelay):
                 for i in range(len(switches)):
                     command = self.base_url + "?relay" + switches[i]
                     logger.debug(command)
-                    session = requests.Session()
-                    retry = Retry(connect=self.retries, backoff_factor=0.1)
-                    adapter = HTTPAdapter(max_retries=retry)
-                    session.mount("http://", adapter)
-                    session.mount("https://", adapter)
-                    response = session.get(command, timeout=self.timeout)
+                    response = self.request_with_retry(command)
                     if response.status_code != requests.codes.ok:
                         raise Exception(
                             "Unable to set preselector state. Verify configuration and connectivity."
@@ -93,12 +83,7 @@ class ControlByWebWebRelay(WebRelay):
         :return: True if the relay can be reached, or False if it cannot be reached.
         """
         try:
-            session = requests.Session()
-            retry = Retry(connect=self.retries, backoff_factor=0.1)
-            adapter = HTTPAdapter(max_retries=retry)
-            session.mount("http://", adapter)
-            session.mount("https://", adapter)
-            response = session.get(self.base_url, timeout=self.timeout)
+            response = self.request_with_retry(self.base_url)
             return response.status_code == requests.codes.ok
         except:
             logger.error("Unable to connect to preselector")
@@ -189,7 +174,16 @@ class ControlByWebWebRelay(WebRelay):
 
     def get_state_xml(self):
         if self.base_url and self.base_url != "":
-            response = requests.get(self.base_url, timeout=self.timeout)
+            response = self.request_with_retry(self.base_url)
             return response
         else:
             raise Exception("base_url is None or blank")
+
+    def request_with_retry(self, url) -> requests.Response:
+        session = requests.Session()
+        retry = Retry(connect=self.retries, backoff_factor=0.1)
+        adapter = HTTPAdapter(max_retries=retry)
+        session.mount("http://", adapter)
+        session.mount("https://", adapter)
+        response = session.get(url, timeout=self.timeout)
+        return response
