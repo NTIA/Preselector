@@ -38,7 +38,12 @@ class ControlByWebWebRelay(WebRelay):
 
     def get_sensor_value(self, sensor_num):
         sensor_num_string = str(sensor_num)
-        response = requests.get(self.base_url)
+        session = requests.Session()
+        retry = Retry(connect=self.retries, backoff_factor=0.1)
+        adapter = HTTPAdapter(max_retries=retry)
+        session.mount("http://", adapter)
+        session.mount("https://", adapter)
+        response = session.get(self.base_url, timeout=self.timeout)
         # Check for X310 xml format first.
         sensor_tag = "sensor" + sensor_num_string
         root = ET.fromstring(response.text)
@@ -88,7 +93,12 @@ class ControlByWebWebRelay(WebRelay):
         :return: True if the relay can be reached, or False if it cannot be reached.
         """
         try:
-            response = requests.get(self.base_url, timeout=self.timeout)
+            session = requests.Session()
+            retry = Retry(connect=self.retries, backoff_factor=0.1)
+            adapter = HTTPAdapter(max_retries=retry)
+            session.mount("http://", adapter)
+            session.mount("https://", adapter)
+            response = session.get(self.base_url, timeout=self.timeout)
             return response.status_code == requests.codes.ok
         except:
             logger.error("Unable to connect to preselector")
