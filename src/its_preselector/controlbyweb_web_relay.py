@@ -65,25 +65,9 @@ class ControlByWebWebRelay(WebRelay):
                 for i in range(len(switches)):
                     command = self.base_url + "?relay" + switches[i]
                     logger.debug(command)
-                    try:
-                        response = requests.get(command, timeout=self.timeout)
-                    except:
-                        response = requests.Response()
-                        response.status_code = 500
-                    count = 1
-                    while (
-                        response.status_code != requests.codes.ok
-                        and count <= self.retries
-                    ):
-                        logger.debug("Failed to set state. Retrying...")
-                        try:
-                            response = requests.get(command, timeout=self.timeout)
-                            count = count + 1
-                        except:
-                            count = count + 1
-                            response = requests.Response()
-                            response.status_code = 500
-
+                    response = requests.get(
+                        command, timeout=self.timeout, max_retries=self.retries
+                    )
                     if response.status_code != requests.codes.ok:
                         raise Exception(
                             "Unable to set preselector state. Verify configuration and connectivity."
