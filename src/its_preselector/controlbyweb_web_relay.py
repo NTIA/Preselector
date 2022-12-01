@@ -2,6 +2,8 @@ import logging
 
 import defusedxml.ElementTree as ET
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3 import Retry
 
 from its_preselector.configuration_exception import ConfigurationException
 from its_preselector.web_relay import WebRelay
@@ -68,6 +70,12 @@ class ControlByWebWebRelay(WebRelay):
                     response = requests.get(
                         command, timeout=self.timeout, max_retries=self.retries
                     )
+                    session = requests.Session()
+                    retry = Retry(connect=self.retries, backoff_factor=0.1)
+                    adapter = HTTPAdapter(max_retries=retry)
+                    session.mount("http://", adapter)
+                    session.mount("https://", adapter)
+                    session.get(command, timeout=self.timeout)
                     if response.status_code != requests.codes.ok:
                         raise Exception(
                             "Unable to set preselector state. Verify configuration and connectivity."
