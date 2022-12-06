@@ -32,7 +32,14 @@ class ControlByWebWebRelay(WebRelay):
         elif config["name"] == "":
             raise ConfigurationException("name cannot be blank.")
 
-    def get_sensor_value(self, sensor_num):
+    def get_sensor_value(self, sensor_num: int) -> float:
+        """
+        Read numeric value from a 1-Wire sensor of the WebRelay.
+
+        :param sensor_num: Configured index of the desired sensor.
+        :raises ConfigurationException: If the requested sensor cannot be read.
+        :return: The desired sensor value.
+        """
         sensor_num_string = str(sensor_num)
         response = requests.get(self.base_url)
         # Check for X310 xml format first.
@@ -44,11 +51,35 @@ class ControlByWebWebRelay(WebRelay):
             sensor_tag = "oneWireSensor" + sensor_num_string
             sensor = root.find(sensor_tag)
         if sensor is None:
-            raise ConfigurationException(
-                "Sensor {num}".format(num=sensor_num) + " does not exist."
-            )
-        else:
-            return sensor.text
+            raise ConfigurationException(f"Sensor {sensor_num} does not exist.")
+        logger.debug(
+            f"******\n 1wiresensor value {sensor.text} of type {type(sensor.text)}\n*******"
+        )
+        return float(sensor.text)
+
+    def get_digital_input_value(self, input_num: int) -> bool:
+        """
+        Read boolean value from a digital input of the WebRelay.
+
+        :param input_num: Configured index of the desired digital input.
+        :return: The boolean value of the desired digital input.
+        """
+        input_num = int(input_num)
+        response = requests.get(self.base_url)
+        # Check for X310 format first
+        input_tag = f"input{input_num}state"
+        root = ET.fromstring(response.text)
+        digital_input = root.find(input_tag)
+        if digital_input is None:
+            # Didn't find X310 format, check for X410 format
+            input_tag = f"digitalInput{input_num}"
+            digital_input = root.find(input_tag)
+        if digital_input is None:
+            raise ConfigurationException(f"Digital Input {input_num} does not exist.")
+        logger.debug(
+            f"******\n digital input value {digital_input.text} of type {type(digital_input.text)}\n*******"
+        )
+        return bool(digital_input.text)
 
     def set_state(self, key):
         """
