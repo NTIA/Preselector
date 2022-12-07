@@ -56,9 +56,6 @@ class ControlByWebWebRelay(WebRelay):
             sensor = root.find(sensor_tag)
         if sensor is None:
             raise ConfigurationException(f"Sensor {sensor_num} does not exist.")
-        logger.debug(
-            f"******\n 1wiresensor value {sensor.text} of type {type(sensor.text)}\n*******"
-        )
         return float(sensor.text)
 
     def get_digital_input_value(self, input_num: int) -> bool:
@@ -80,9 +77,6 @@ class ControlByWebWebRelay(WebRelay):
             digital_input = root.find(input_tag)
         if digital_input is None:
             raise ConfigurationException(f"Digital Input {input_num} does not exist.")
-        logger.debug(
-            f"******\n digital input value {digital_input.text} of type {type(digital_input.text)}\n*******"
-        )
         return bool(digital_input.text)
 
     def set_state(self, key):
