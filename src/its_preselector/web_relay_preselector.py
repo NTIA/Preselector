@@ -27,8 +27,11 @@ class WebRelayPreselector(Preselector):
         """
         self.web_relay.set_state(state_name)
 
-    def get_sensor_value(self, sensor_num) -> str:
+    def get_sensor_value(self, sensor_num) -> float:
         return self.web_relay.get_sensor_value(sensor_num)
+
+    def get_digital_input_value(self, input_num: int) -> bool:
+        return self.web_relay.get_digital_input_value(input_num)
 
     def healthy(self) -> bool:
         return self.web_relay.healthy()
