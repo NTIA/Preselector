@@ -66,7 +66,7 @@ class ControlByWebWebRelay(WebRelay):
         :return: The boolean value of the desired digital input.
         """
         input_num = int(input_num)
-        response = requests.get(self.base_url)
+        response = self.request_with_retry(self.base_url)
         # Check for X310 format first
         input_tag = f"input{input_num}state"
         root = ET.fromstring(response.text)
