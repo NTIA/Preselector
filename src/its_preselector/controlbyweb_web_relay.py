@@ -36,7 +36,7 @@ class ControlByWebWebRelay(WebRelay):
             raise ConfigurationException("name cannot be blank.")
         self.retries = retries
 
-    def get_sensor_value(self, sensor_num: int) -> str:
+    def get_sensor_value(self, sensor_num: int) -> float:
         """
         Read numeric value from a 1-Wire sensor of the WebRelay.
 
@@ -56,7 +56,7 @@ class ControlByWebWebRelay(WebRelay):
             sensor = root.find(sensor_tag)
         if sensor is None:
             raise ConfigurationException(f"Sensor {sensor_num} does not exist.")
-        return sensor.text
+        return float(sensor.text)
 
     def get_digital_input_value(self, input_num: int) -> bool:
         """
