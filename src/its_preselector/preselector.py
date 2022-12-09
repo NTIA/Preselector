@@ -243,11 +243,22 @@ class Preselector(ABC):
         raise ConfigurationException("Amplifier {id} does not exist.".format(id=amp_id))
 
     @abstractmethod
-    def get_sensor_value(self, sensor) -> str:
+    def get_sensor_value(self, sensor) -> float:
         """
         Read the value from a sensor on the preselector.
-        :param sensor: The name or id of the sensor.
-        :return: The string value of from the sensor,  e.g. the temperature.
+
+        :param sensor: The name or ID of the sensor.
+        :return: The float value from the sensor,  e.g. the temperature.
+        """
+        pass
+
+    @abstractmethod
+    def get_digital_input_value(self, input) -> bool:
+        """
+        Read the value from a digital input on the preselector.
+
+        :param input: The name or id of the digital input.
+        :return: The boolean value from the digital input.
         """
         pass
 
