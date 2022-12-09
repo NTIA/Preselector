@@ -2,6 +2,8 @@ import logging
 
 import defusedxml.ElementTree as ET
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3 import Retry
 
 from its_preselector.configuration_exception import ConfigurationException
 from its_preselector.web_relay import WebRelay
@@ -10,11 +12,12 @@ logger = logging.getLogger(__name__)
 
 
 class ControlByWebWebRelay(WebRelay):
-    def __init__(self, config: dict, timeout: int = 1):
+    def __init__(self, config: dict, timeout: int = 1, retries=3):
         """
         :param config: The web relay configuration dictionary. The dictionary must
         include "name" and "base_url" entries.
         :param timeout: The timeout in seconds that will be used in any web requests.
+        :param retries: The total number of retry attempts to make in the event of a failure to set_state, get_sensor_value, or check health.
         """
         super().__init__(config, timeout)
         if "base_url" not in config:
@@ -31,10 +34,11 @@ class ControlByWebWebRelay(WebRelay):
             raise ConfigurationException("name cannot be None.")
         elif config["name"] == "":
             raise ConfigurationException("name cannot be blank.")
+        self.retries = retries
 
     def get_sensor_value(self, sensor_num):
         sensor_num_string = str(sensor_num)
-        response = requests.get(self.base_url)
+        response = self.request_with_retry(self.base_url)
         # Check for X310 xml format first.
         sensor_tag = "sensor" + sensor_num_string
         root = ET.fromstring(response.text)
@@ -63,7 +67,7 @@ class ControlByWebWebRelay(WebRelay):
                 for i in range(len(switches)):
                     command = self.base_url + "?relay" + switches[i]
                     logger.debug(command)
-                    response = requests.get(command, timeout=self.timeout)
+                    response = self.request_with_retry(command)
                     if response.status_code != requests.codes.ok:
                         raise Exception(
                             "Unable to set preselector state. Verify configuration and connectivity."
@@ -79,7 +83,7 @@ class ControlByWebWebRelay(WebRelay):
         :return: True if the relay can be reached, or False if it cannot be reached.
         """
         try:
-            response = requests.get(self.base_url, timeout=self.timeout)
+            response = self.request_with_retry(self.base_url)
             return response.status_code == requests.codes.ok
         except:
             logger.error("Unable to connect to preselector")
@@ -170,7 +174,16 @@ class ControlByWebWebRelay(WebRelay):
 
     def get_state_xml(self):
         if self.base_url and self.base_url != "":
-            response = requests.get(self.base_url, timeout=self.timeout)
+            response = self.request_with_retry(self.base_url)
             return response
         else:
             raise Exception("base_url is None or blank")
+
+    def request_with_retry(self, url) -> requests.Response:
+        session = requests.Session()
+        retry = Retry(connect=self.retries, backoff_factor=0.1)
+        adapter = HTTPAdapter(max_retries=retry)
+        session.mount("http://", adapter)
+        session.mount("https://", adapter)
+        response = session.get(url, timeout=self.timeout)
+        return response
