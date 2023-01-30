@@ -62,6 +62,10 @@ class ControlByWebWebRelay(WebRelay):
         """
         Read boolean value from a digital input of the WebRelay.
 
+        A value of ``False`` is returned if the digital input is not
+        configured, since the XML response includes a zero for any
+        digital inputs which exist but are not configured.
+
         :param input_num: Configured index of the desired digital input.
         :return: The boolean value of the desired digital input.
         """
@@ -77,7 +81,7 @@ class ControlByWebWebRelay(WebRelay):
             digital_input = root.find(input_tag)
         if digital_input is None:
             raise ConfigurationException(f"Digital Input {input_num} does not exist.")
-        return bool(digital_input.text)
+        return bool(int(digital_input.text))
 
     def set_state(self, key):
         """
