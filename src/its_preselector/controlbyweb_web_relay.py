@@ -81,15 +81,7 @@ class ControlByWebWebRelay(WebRelay):
             digital_input = root.find(input_tag)
         if digital_input is None:
             raise ConfigurationException(f"Digital Input {input_num} does not exist.")
-        elif digital_input == "1":
-            return_value = True
-        elif digital_input == "0":
-            return_value = False
-        else:
-            raise ConfigurationException(
-                f"Digital input {input_num} returned invalid value: {digital_input}"
-            )
-        return return_value
+        return bool(int(digital_input.text))
 
     def set_state(self, key):
         """
