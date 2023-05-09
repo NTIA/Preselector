@@ -209,7 +209,7 @@ class ControlByWebWebRelay(WebRelay):
             raise Exception("base_url is None or blank")
 
     def request_with_retry(self, url, retry=True) -> requests.Response:
-        response = requests.
+        response = None
         try:
             session = requests.Session()
             retry = Retry(connect=self.retries, backoff_factor=0.1)
