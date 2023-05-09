@@ -1,9 +1,7 @@
 import logging
 
 import defusedxml.ElementTree as ET
-import requests
-from requests.adapters import HTTPAdapter
-from urllib3 import Retry
+import httpx
 
 from its_preselector.configuration_exception import ConfigurationException
 from its_preselector.web_relay import WebRelay
@@ -28,6 +26,8 @@ class ControlByWebWebRelay(WebRelay):
             raise ConfigurationException("base_url cannot be blank.")
         else:
             self.base_url = config["base_url"]
+        if self.base_url.endswith("/"):
+            self.base_url = self.base_url[:-1]
         if "name" not in config:
             raise ConfigurationException("Config must include name.")
         elif config["name"] is None:
@@ -35,6 +35,10 @@ class ControlByWebWebRelay(WebRelay):
         elif config["name"] == "":
             raise ConfigurationException("name cannot be blank.")
         self.retries = retries
+        self.http_transport = httpx.HTTPTransport(retries=self.retries)
+        self.http_client = httpx.AsyncClient(
+            base_url=self.base_url, timeout=self.timeout, transport=self.http_transport
+        )
 
     def get_sensor_value(self, sensor_num: int) -> float:
         """
@@ -45,7 +49,7 @@ class ControlByWebWebRelay(WebRelay):
         :return: The desired sensor value.
         """
         sensor_num_string = str(sensor_num)
-        response = self.request_with_retry(self.base_url)
+        response = self.request_with_retry()
         # Check for X310 xml format first.
         sensor_tag = "sensor" + sensor_num_string
         root = ET.fromstring(response.text)
@@ -70,7 +74,7 @@ class ControlByWebWebRelay(WebRelay):
         :return: The boolean value of the desired digital input.
         """
         input_num = int(input_num)
-        response = self.request_with_retry(self.base_url)
+        response = self.request_with_retry()
         # Check for X310 format first
         input_tag = f"input{input_num}state"
         root = ET.fromstring(response.text)
@@ -88,23 +92,24 @@ class ControlByWebWebRelay(WebRelay):
         Set the state of the relay.
         :param key: The key for the desired state or states as defined in the config.
         :return: None
-        :raises: requests.Timeout exception
+        :raises httpx.ConnectTimeout: If the program is unable to connect
+            to the preselector before the configured timeout interval passes.
         """
         if key in self.config["control_states"]:
             switches = self.config["control_states"][str(key)].split(",")
             if self.base_url and self.base_url != "":
-                for i in range(len(switches)):
-                    command = self.base_url + "?relay" + switches[i]
-                    logger.debug(command)
-                    response = self.request_with_retry(command)
-                    if response.status_code != requests.codes.ok:
+                for s in switches:
+                    params = {f"?relay{s.split('=')[0]}": s.split("=")[1]}
+                    logger.debug(self.base_url, params)
+                    response = self.request_with_retry(params)
+                    if response.status_code != httpx.codes.OK:
                         raise Exception(
                             "Unable to set preselector state. Verify configuration and connectivity."
                         )
             else:
                 raise Exception("base_url is None or blank")
         else:
-            raise Exception("RF path " + key + " configuration does not exist.")
+            raise Exception(f"RF path {key} configuration does not exist.")
 
     def healthy(self) -> bool:
         """
@@ -112,8 +117,8 @@ class ControlByWebWebRelay(WebRelay):
         :return: True if the relay can be reached, or False if it cannot be reached.
         """
         try:
-            response = self.request_with_retry(self.base_url)
-            return response.status_code == requests.codes.ok
+            response = self.request_with_retry()
+            return response.status_code == httpx.codes.OK
         except:
             logger.error("Unable to connect to preselector")
         return False
@@ -131,8 +136,8 @@ class ControlByWebWebRelay(WebRelay):
         healthy = False
         try:
             response = self.get_state_xml()
-            logger.debug("status code: " + str(response.status_code))
-            healthy = response.status_code == requests.codes.ok
+            logger.debug(f"status code: {response.status_code}")
+            healthy = response.status_code == httpx.codes.OK
             if healthy:
                 state_xml = response.text
                 xml_root = ET.fromstring(state_xml)
@@ -183,7 +188,7 @@ class ControlByWebWebRelay(WebRelay):
         root = ET.fromstring(state_xml)
         relay_node = root.find(relay)
         if relay_node is None:
-            raise Exception("Relay " + relay + " does not exist.")
+            raise Exception(f"Relay {relay} does not exist.")
         else:
             relay_state = relay_node.text
             if relay_state == "1":
@@ -196,23 +201,22 @@ class ControlByWebWebRelay(WebRelay):
         root = ET.fromstring(state_xml)
         relay_node = root.find(relay)
         if relay_node is None:
-            raise Exception("Relay " + relay + " does not exist.")
+            raise Exception(f"Relay {relay} does not exist.")
         else:
             relay_state = relay_node.text
             return relay_state
 
     def get_state_xml(self):
         if self.base_url and self.base_url != "":
-            response = self.request_with_retry(self.base_url)
+            response = self.request_with_retry()
             return response
         else:
             raise Exception("base_url is None or blank")
 
-    def request_with_retry(self, url) -> requests.Response:
-        session = requests.Session()
-        retry = Retry(connect=self.retries, backoff_factor=0.1)
-        adapter = HTTPAdapter(max_retries=retry)
-        session.mount("http://", adapter)
-        session.mount("https://", adapter)
-        response = session.get(url, timeout=self.timeout)
+    def request_with_retry(self, params: dict = None) -> httpx.Response:
+        return self.loop.run_until_complete(self.__async__request_with_retry(params))
+
+    async def __async__request_with_retry(self, params: dict = None) -> httpx.Response:
+        async with self.http_client as client:
+            response = await client.get(params=params)
         return response

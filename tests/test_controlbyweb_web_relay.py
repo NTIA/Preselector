@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import MagicMock, PropertyMock
 
 import defusedxml.ElementTree as ET
-from requests import Response, codes
+from httpx import Response, codes
 
 from its_preselector.controlbyweb_web_relay import ControlByWebWebRelay
 
@@ -75,8 +75,7 @@ class ControlByWebWebRelayTests(unittest.TestCase):
                 },
             }
         )
-        response = Response()
-        response.status_code = codes.ok
+        response = Response(status_code=codes.OK)
         type(response).text = PropertyMock(return_value=self.state)
         web_relay.get_state_xml = MagicMock(return_value=response)
         states = web_relay.get_status()
@@ -104,8 +103,7 @@ class ControlByWebWebRelayTests(unittest.TestCase):
                 },
             }
         )
-        response = Response()
-        response.status_code = codes.ok
+        response = Response(status_code=codes.OK)
         type(response).text = PropertyMock(return_value=self.state)
         web_relay.get_state_xml = MagicMock(return_value=response)
         states = web_relay.get_status()

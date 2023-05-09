@@ -23,7 +23,8 @@ class WebRelayPreselector(Preselector):
         Set the state of the preselector.
         :param state_name: The key for the desired state or states as defined in the config.
         :return: None
-        :raises: requests.Timeout exception
+        :raises httpx.ConnectTimeout: If the program is unable to connect
+            to the preselector within the configured timeout window.
         """
         self.web_relay.set_state(state_name)
 
