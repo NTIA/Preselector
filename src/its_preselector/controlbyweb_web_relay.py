@@ -208,11 +208,18 @@ class ControlByWebWebRelay(WebRelay):
         else:
             raise Exception("base_url is None or blank")
 
-    def request_with_retry(self, url) -> requests.Response:
-        session = requests.Session()
-        retry = Retry(connect=self.retries, backoff_factor=0.1)
-        adapter = HTTPAdapter(max_retries=retry)
-        session.mount("http://", adapter)
-        session.mount("https://", adapter)
-        response = session.get(url, timeout=self.timeout)
+    def request_with_retry(self, url, retry=True) -> requests.Response:
+        response = requests.
+        try:
+            session = requests.Session()
+            retry = Retry(connect=self.retries, backoff_factor=0.1)
+            adapter = HTTPAdapter(max_retries=retry)
+            session.mount("http://", adapter)
+            session.mount("https://", adapter)
+            response = session.get(url, timeout=self.timeout)
+        except:
+            logger.debug(f"Unable to request: {url}")
+            if retry:
+                return self.request_with_retry(url, False)
+
         return response
