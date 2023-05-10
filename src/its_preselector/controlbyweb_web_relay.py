@@ -230,5 +230,5 @@ class ControlByWebWebRelay(WebRelay):
 
     async def __async__request_with_retry(self, params: dict = None) -> httpx.Response:
         async with self.http_client as client:
-            response = await client.get(params=params)
+            response = await client.get(url="/", params=params)
         return response
