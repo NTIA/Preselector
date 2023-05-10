@@ -36,7 +36,7 @@ class ControlByWebWebRelay(WebRelay):
         elif config["name"] == "":
             raise ConfigurationException("name cannot be blank.")
         self.retries = retries
-        self.http_transport = httpx.HTTPTransport(retries=self.retries)
+        self.http_transport = httpx.AsyncHTTPTransport(retries=self.retries)
         self.http_client = httpx.AsyncClient(
             base_url=self.base_url, timeout=self.timeout, transport=self.http_transport
         )
