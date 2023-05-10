@@ -1,3 +1,4 @@
+import asyncio
 import logging
 
 import defusedxml.ElementTree as ET
@@ -39,6 +40,17 @@ class ControlByWebWebRelay(WebRelay):
         self.http_client = httpx.AsyncClient(
             base_url=self.base_url, timeout=self.timeout, transport=self.http_transport
         )
+        self.loop = asyncio.get_event_loop()
+
+    def __del__(self):
+        """
+        Destructor method should help close the client and event loop at exit.
+        """
+        self.loop.run_until_complete(self.close_client())
+        self.loop.close()
+
+    async def close_client(self):
+        await self.http_client.close()
 
     def get_sensor_value(self, sensor_num: int) -> float:
         """
