@@ -104,9 +104,7 @@ class ControlByWebWebRelayTests(unittest.TestCase):
                     "noise on": "relay2=1,relay1=1",
                     "measurements": "relay1=0,relay2=0,relay3=0,relay4=0",
                 },
-                "analog_inputs":{
-                    "analogInputTest": 1
-                }
+                "analog_inputs": {"analogInputTest": 1},
             }
         )
         response = Response()
