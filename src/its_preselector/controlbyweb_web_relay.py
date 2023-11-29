@@ -83,6 +83,24 @@ class ControlByWebWebRelay(WebRelay):
             raise ConfigurationException(f"Digital Input {input_num} does not exist.")
         return bool(int(digital_input.text))
 
+    def get_analog_input_value(self, input_num: int) -> bool:
+        """
+        Read float value from an analog input of the WebRelay.
+
+        :param input_num: Configured index of the desired analog input.
+        :raises ConfigurationException: If the requested analog input cannot be read.
+        :return: The desired analog input value.
+        """
+        input_string = str(input_num)
+        response = self.request_with_retry(self.base_url)
+        input_tag = f"analogInput{input_string}"
+        root = ET.fromstring(response.text)
+        sensor = root.find(input_tag)
+        if sensor is None:
+            raise ConfigurationException(f"Analog input {input_tag} does not exist.")
+        return float(sensor.text)
+
+
     def set_state(self, key):
         """
         Set the state of the relay.

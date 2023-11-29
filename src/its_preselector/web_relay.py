@@ -30,6 +30,15 @@ class WebRelay(ABC):
         """
 
     @abstractmethod
+    def get_analog_input_value(input) -> float:
+        """
+        Read the value from an analog input on the web relay.
+
+        :param input: The name or ID of the analog input
+        :return: The float value read from the analog input.
+        """
+
+    @abstractmethod
     def set_state(self, state_key: str) -> None:
         """
         Set the state of the web relay as defined in the config.
