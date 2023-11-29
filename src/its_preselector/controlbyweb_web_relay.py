@@ -164,15 +164,22 @@ class ControlByWebWebRelay(WebRelay):
 
                 if "sensors" in self.config:
                     for key,value in self.config["sensors"].items():
-                        state[key] = self.get_sensor_value(value)
-
+                        try:
+                            state[key] = self.get_sensor_value(value)
+                        except:
+                            logger.error(f"Unable to get sensor value for sensor:{value}" )
                 if "digital_inputs" in self.config:
                     for key, value in self.config["digital_inputs"].items():
-                        state[key] = self.get_digital_input_value(value)
-
+                        try:
+                            state[key] = self.get_digital_input_value(value)
+                        except:
+                            logger.error(f"Unable to read digital input:{value}")
                 if "analog_inputs" in self.config:
                     for key, value in self.config["analog_inputs"].items():
-                        state[key] = self.get_analog_input_value(value)
+                        try:
+                            state[key] = self.get_analog_input_value(value)
+                        except:
+                            logger.error(f"Unable to read analog input:{value}")
         except:
             logger.error("Unable to get status")
         state["healthy"] = healthy
