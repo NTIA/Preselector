@@ -71,6 +71,25 @@ example config file for the `WebRelayPreselector` to describe how it works:
     "noise diode powered" : "relay2=1",
     "antenna path enabled": "relay1=0",
     "noise diode path enabled": "relay1=1"
+  },
+  "sensors": {
+    "internal_temp": 1,
+    "internal_humidity": 2,
+    "tec_intake_temp": 3,
+    "tec_exhaust_temp": 4
+  },
+  "digital_inputs": {
+      "ups_power": 1,
+      "ups_battery_level": 2,
+      "ups_trouble": 3,
+      "ups_battery_replace": 4
+  },
+  "analog_inputs": {
+      "door_sensor": 1,
+      "5vdc_monitor": 2,
+      "28vdc_monitor": 3,
+      "15vdc_monitor": 4,
+      "24vdc_monitor": 5
   }
 }
 ```
@@ -88,6 +107,11 @@ those specified in the mapping. Each of the entries in the config provide mappin
 associated web relay input states and every RFPath defined in the sensor definition json
 file should have an entry in the preselector config. The keys in the dictionary may use the
 name of the RFPath or the index of the RFPath in the RFPaths array.
+The `sensors`, `digital_inputs`, and `analog_inputs` keys define the sensors,
+digital_inputs and analog_inputs configured on the device. Within each of the sections,
+each key provides the name of the sensor or input and the value specifies the assigned
+sensor or input number. The get_satus method will provide each sensor/input value with
+the specified label.
 
 In this example, there are `noise_diode_on` and `noise_diode_off` keys to correspond to the
 preselector paths to turn the noise diode on and off, and an antenna key to indicate the
