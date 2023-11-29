@@ -92,7 +92,7 @@ class ControlByWebWebRelay(WebRelay):
         :return: The desired analog input value.
         """
         input_string = str(input_num)
-        response = self.request_with_retry(self.base_url)
+        response = self.get_state_xml()
         input_tag = f"analogInput{input_string}"
         root = ET.fromstring(response.text)
         sensor = root.find(input_tag)

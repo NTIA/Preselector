@@ -22,6 +22,7 @@ class ControlByWebWebRelayTests(unittest.TestCase):
             "<relay4>0</relay4>"
             "<vin>27.6</vin>"
             "<register1>0</register1>"
+            "<analogInput1>1.4</analogInput1>"
             "<oneWireSensor1>102.3</oneWireSensor1>"
             "<utcTime>9160590</utcTime>"
             "<timezoneOffset>-25200</timezoneOffset>"
@@ -86,6 +87,34 @@ class ControlByWebWebRelayTests(unittest.TestCase):
         self.assertFalse(states["measurements"])
         self.assertTrue(states["noise diode path enabled"])
         self.assertTrue(states["noise on"])
+
+    def test_get_analog_input(self):
+        root = ET.fromstring(self.state)
+        web_relay = ControlByWebWebRelay(
+            {
+                "base_url": "http://127.0.0.1",
+                "name": "test_preselector",
+                "control_states": {
+                    "noise_diode_off": "1State=1,2State=0,3State=0,4State=0"
+                },
+                "status_states": {
+                    "noise diode powered": "relay2=1",
+                    "antenna path enabled": "relay1=0",
+                    "noise diode path enabled": "relay1=1",
+                    "noise on": "relay2=1,relay1=1",
+                    "measurements": "relay1=0,relay2=0,relay3=0,relay4=0",
+                },
+                "analog_inputs":{
+                    "analogInputTest": 1
+                }
+            }
+        )
+        response = Response()
+        response.status_code = codes.ok
+        type(response).text = PropertyMock(return_value=self.state)
+        web_relay.get_state_xml = MagicMock(return_value=response)
+        analogInputVal = web_relay.get_analog_input_value(1)
+        self.assertEqual(1.4, analogInputVal)
 
     def test_get_status(self):
         web_relay = ControlByWebWebRelay(
