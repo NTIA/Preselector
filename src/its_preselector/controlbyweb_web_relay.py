@@ -161,6 +161,18 @@ class ControlByWebWebRelay(WebRelay):
                     for relay_state in relay_states:
                         matches = matches and self.state_matches(relay_state, xml_root)
                     state[key] = matches
+
+                if "sensors" in self.config:
+                    for key,value in self.config["sensors"].items():
+                        state[key] = self.get_sensor_value(value)
+
+                if "digital_inputs" in self.config:
+                    for key, value in self.config["digital_inputs"].items():
+                        state[key] = self.get_digital_input_value(value)
+
+                if "analog_inputs" in self.config:
+                    for key, value in self.config["analog_inputs"].items():
+                        state[key] = self.get_analog_input_value(value)
         except:
             logger.error("Unable to get status")
         state["healthy"] = healthy
