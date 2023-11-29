@@ -100,7 +100,6 @@ class ControlByWebWebRelay(WebRelay):
             raise ConfigurationException(f"Analog input {input_tag} does not exist.")
         return float(sensor.text)
 
-
     def set_state(self, key):
         """
         Set the state of the relay.
@@ -163,11 +162,13 @@ class ControlByWebWebRelay(WebRelay):
                     state[key] = matches
 
                 if "sensors" in self.config:
-                    for key,value in self.config["sensors"].items():
+                    for key, value in self.config["sensors"].items():
                         try:
                             state[key] = self.get_sensor_value(value)
                         except:
-                            logger.error(f"Unable to get sensor value for sensor:{value}" )
+                            logger.error(
+                                f"Unable to get sensor value for sensor:{value}"
+                            )
                 if "digital_inputs" in self.config:
                     for key, value in self.config["digital_inputs"].items():
                         try:
