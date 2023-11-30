@@ -39,6 +39,7 @@ class ControlByWebWebRelay(WebRelay):
 
     def check_for_unique_names(self, config: dict):
         names = {}
+        self.check_and_add_keys("status_states", config, names)
         self.check_and_add_keys("sensors", config, names)
         self.check_and_add_keys("analog_inputs", config, names)
         self.check_and_add_keys("digital_inputs", config, names)

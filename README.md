@@ -112,9 +112,9 @@ The `sensors`, `digital_inputs`, and `analog_inputs` keys define the sensors,
 digital_inputs and analog_inputs configured on the device. Within each of the sections,
 each key provides the name of the sensor or input and the value specifies the assigned
 sensor or input number. The get_satus method will provide each sensor/input value with
-the specified label. Every sensor and input must have a unique name. Attempting to
-create a`ControlByWebWebRelay` with duplicate sensors or inputs
-will cause a `ConfigurationException.`
+the specified label. Every status_state, sensor, and input must have a unique name.
+Attempting to create a`ControlByWebWebRelay` with duplicate status_states,
+sensors, or inputs will cause a `ConfigurationException.`
 
 In this example, there are `noise_diode_on` and `noise_diode_off` keys to correspond to the
 preselector paths to turn the noise diode on and off, and an antenna key to indicate the
