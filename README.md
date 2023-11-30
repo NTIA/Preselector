@@ -54,9 +54,9 @@ python3 –m pip install .
 ### `WebRelayPreselector` Configuration
 
 The `WebRelayPreselector` requires a [SigMF metadata file](https://Github.com/NTIA/sigmf-ns-ntia)
-that describes the sensor preselector and a config file to describe the x310 settings for
-the RF paths specified in the metadata and for any other desired sources. Below is an
-example config file for the `WebRelayPreselector` to describe how it works:
+that describes the sensor preselector and a config file to describe the WebRelay
+settings for the RF paths specified in the metadata and for any other desired sources.
+Below is an example config file for the `WebRelayPreselector` to describe how it works:
 
 ```json
 {
@@ -94,6 +94,8 @@ example config file for the `WebRelayPreselector` to describe how it works:
 }
 ```
 
+Note, the config above is specifically for a prelector with a `ControlByWebWebRelay.`
+Other Preselectors and WebRelays may require a different configuration.
 The `base_url` and `name` keys are the only required keys for the `WebRelayPreselector`.
 The `base_url` should map to the base URL to interact with the WebRelay
 (see [https://www.controlbyweb.com/x310](https://www.controlbyweb.com/x310)
@@ -105,13 +107,14 @@ The status method of the preselector will provide each of the keys specified in 
 status_states entry mapped to a boolean indicating whether the preselector states match
 those specified in the mapping. Each of the entries in the config provide mappings to the
 associated web relay input states and every RFPath defined in the sensor definition json
-file should have an entry in the preselector config. The keys in the dictionary may use the
-name of the RFPath or the index of the RFPath in the RFPaths array.
+file should have an entry in the preselector config.
 The `sensors`, `digital_inputs`, and `analog_inputs` keys define the sensors,
 digital_inputs and analog_inputs configured on the device. Within each of the sections,
 each key provides the name of the sensor or input and the value specifies the assigned
 sensor or input number. The get_satus method will provide each sensor/input value with
-the specified label.
+the specified label. Every sensor and input must have a unique name. Attempting to
+create a`ControlByWebWebRelay` with duplicate sensors or inputs
+will cause a `ConfigurationException.`
 
 In this example, there are `noise_diode_on` and `noise_diode_off` keys to correspond to the
 preselector paths to turn the noise diode on and off, and an antenna key to indicate the

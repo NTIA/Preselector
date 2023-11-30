@@ -4,6 +4,7 @@ from unittest.mock import MagicMock, PropertyMock
 import defusedxml.ElementTree as ET
 from requests import Response, codes
 
+from its_preselector.configuration_exception import ConfigurationException
 from its_preselector.controlbyweb_web_relay import ControlByWebWebRelay
 
 
@@ -30,6 +31,27 @@ class ControlByWebWebRelayTests(unittest.TestCase):
             "</datavalues>"
             ""
         )
+
+    def test_requires_unique_sensors_and_inputs(self):
+        with self.assertRaises(ConfigurationException):
+            relay = ControlByWebWebRelay(
+                {
+                    "base_url": "127.0.0.1",
+                    "name": "test_preselector",
+                    "control_states": {
+                        "noise_diode_off": "1State=1,2State=0,3State=0,4State=0"
+                    },
+                    "status_states": {
+                        "noise diode powered": "relay2=1",
+                        "antenna path enabled": "relay1=0",
+                        "noise diode path enabled": "relay1=1",
+                        "noise on": "relay2=1,relay1=1",
+                        "measurements": "relay1=0,relay2=0,relay3=0,relay4=0",
+                    },
+                    "sensors": {"duplicate": 1},
+                    "analog_inputs": {"duplicate": 1},
+                }
+            )
 
     def test_is_enabled(self):
         web_relay = ControlByWebWebRelay(
@@ -87,6 +109,57 @@ class ControlByWebWebRelayTests(unittest.TestCase):
         self.assertFalse(states["measurements"])
         self.assertTrue(states["noise diode path enabled"])
         self.assertTrue(states["noise on"])
+
+    def test_get_sensor_value(self):
+        root = ET.fromstring(self.state)
+        web_relay = ControlByWebWebRelay(
+            {
+                "base_url": "http://127.0.0.1",
+                "name": "test_preselector",
+                "control_states": {
+                    "noise_diode_off": "1State=1,2State=0,3State=0,4State=0"
+                },
+                "status_states": {
+                    "noise diode powered": "relay2=1",
+                    "antenna path enabled": "relay1=0",
+                    "noise diode path enabled": "relay1=1",
+                    "noise on": "relay2=1,relay1=1",
+                    "measurements": "relay1=0,relay2=0,relay3=0,relay4=0",
+                },
+            }
+        )
+        response = Response()
+        response.status_code = codes.ok
+        type(response).text = PropertyMock(return_value=self.state)
+        web_relay.get_state_xml = MagicMock(return_value=response)
+        sensor_value = web_relay.get_sensor_value(1)
+        self.assertEqual(102.3, sensor_value)
+
+    def test_get_digital_input(self):
+        root = ET.fromstring(self.state)
+        web_relay = ControlByWebWebRelay(
+            {
+                "base_url": "http://127.0.0.1",
+                "name": "test_preselector",
+                "control_states": {
+                    "noise_diode_off": "1State=1,2State=0,3State=0,4State=0"
+                },
+                "status_states": {
+                    "noise diode powered": "relay2=1",
+                    "antenna path enabled": "relay1=0",
+                    "noise diode path enabled": "relay1=1",
+                    "noise on": "relay2=1,relay1=1",
+                    "measurements": "relay1=0,relay2=0,relay3=0,relay4=0",
+                },
+                "analog_inputs": {"analogInputTest": 1},
+            }
+        )
+        response = Response()
+        response.status_code = codes.ok
+        type(response).text = PropertyMock(return_value=self.state)
+        web_relay.get_state_xml = MagicMock(return_value=response)
+        input_val = web_relay.get_digital_input_value(1)
+        self.assertEqual(False, input_val)
 
     def test_get_analog_input(self):
         root = ET.fromstring(self.state)
