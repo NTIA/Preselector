@@ -11,22 +11,31 @@ class WebRelay(ABC):
         self.timeout = timeout
 
     @abstractmethod
-    def get_sensor_value(sensor) -> float:
+    def get_sensor_value(self, sensor) -> float:
         """
         Read the value from a 1-Wire sensor on the web relay.
 
-        :param sensor: The name or ID of the sensor.
+        :param sensor: The ID of the sensor.
         :return: The float value read from the sensor, e.g. the temperature.
         """
         pass
 
     @abstractmethod
-    def get_digital_input_value(input) -> bool:
+    def get_digital_input_value(self, input_id) -> bool:
         """
         Read the value from a digital input on the web relay.
 
-        :param input: The name or ID of the digital input
+        :param input_id: The ID of the digital input
         :return: The boolean value read from the digital input.
+        """
+
+    @abstractmethod
+    def get_analog_input_value(self, input_id) -> float:
+        """
+        Read the value from an analog input on the web relay.
+
+        :param input_id: The ID of the analog input
+        :return: The float value read from the analog input.
         """
 
     @abstractmethod

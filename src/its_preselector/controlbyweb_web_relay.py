@@ -35,6 +35,24 @@ class ControlByWebWebRelay(WebRelay):
         elif config["name"] == "":
             raise ConfigurationException("name cannot be blank.")
         self.retries = retries
+        self.check_for_unique_names(config)
+
+    def check_for_unique_names(self, config: dict):
+        names = {}
+        self.check_and_add_keys("status_states", config, names)
+        self.check_and_add_keys("sensors", config, names)
+        self.check_and_add_keys("analog_inputs", config, names)
+        self.check_and_add_keys("digital_inputs", config, names)
+
+    def check_and_add_keys(self, key_type: str, config: dict, unique_names: dict):
+        if key_type in config:
+            for key, value in config[key_type].items():
+                if key in unique_names:
+                    raise ConfigurationException(
+                        "All sensors and inputs must have unique names"
+                    )
+                else:
+                    unique_names[key] = key
 
     def get_sensor_value(self, sensor_num: int) -> float:
         """
@@ -45,7 +63,7 @@ class ControlByWebWebRelay(WebRelay):
         :return: The desired sensor value.
         """
         sensor_num_string = str(sensor_num)
-        response = self.request_with_retry(self.base_url)
+        response = self.get_state_xml()
         # Check for X310 xml format first.
         sensor_tag = "sensor" + sensor_num_string
         root = ET.fromstring(response.text)
@@ -70,7 +88,7 @@ class ControlByWebWebRelay(WebRelay):
         :return: The boolean value of the desired digital input.
         """
         input_num = int(input_num)
-        response = self.request_with_retry(self.base_url)
+        response = self.get_state_xml()
         # Check for X310 format first
         input_tag = f"input{input_num}state"
         root = ET.fromstring(response.text)
@@ -82,6 +100,22 @@ class ControlByWebWebRelay(WebRelay):
         if digital_input is None:
             raise ConfigurationException(f"Digital Input {input_num} does not exist.")
         return bool(int(digital_input.text))
+
+    def get_analog_input_value(self, input_num: int) -> float:
+        """
+        Read float value from an analog input of the WebRelay.
+
+        :param input_num: Configured index of the desired analog input.
+        :raises ConfigurationException: If the requested analog input cannot be read.
+        :return: The desired analog input value.
+        """
+        response = self.get_state_xml()
+        input_tag = f"analogInput{input_num}"
+        root = ET.fromstring(response.text)
+        sensor = root.find(input_tag)
+        if sensor is None:
+            raise ConfigurationException(f"Analog input {input_tag} does not exist.")
+        return float(sensor.text)
 
     def set_state(self, key):
         """
@@ -143,6 +177,27 @@ class ControlByWebWebRelay(WebRelay):
                     for relay_state in relay_states:
                         matches = matches and self.state_matches(relay_state, xml_root)
                     state[key] = matches
+
+                if "sensors" in self.config:
+                    for key, value in self.config["sensors"].items():
+                        try:
+                            state[key] = self.get_sensor_value(value)
+                        except:
+                            logger.error(
+                                f"Unable to get sensor value for sensor:{value}"
+                            )
+                if "digital_inputs" in self.config:
+                    for key, value in self.config["digital_inputs"].items():
+                        try:
+                            state[key] = self.get_digital_input_value(value)
+                        except:
+                            logger.error(f"Unable to read digital input:{value}")
+                if "analog_inputs" in self.config:
+                    for key, value in self.config["analog_inputs"].items():
+                        try:
+                            state[key] = self.get_analog_input_value(value)
+                        except:
+                            logger.error(f"Unable to read analog input:{value}")
         except:
             logger.error("Unable to get status")
         state["healthy"] = healthy

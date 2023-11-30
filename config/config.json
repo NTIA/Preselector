@@ -9,6 +9,25 @@
     "noise diode powered" : "relay2=1",
     "antenna path enabled": "relay1=0",
     "noise diode path enabled": "relay1=1"
+  },
+  "sensors": {
+    "internal_temp": 1,
+    "internal_humidity": 2,
+    "tec_intake_temp": 3,
+    "tec_exhaust_temp": 4
+  },
+  "digital_inputs": {
+      "ups_power": 1,
+      "ups_battery_level": 2,
+      "ups_trouble": 3,
+      "ups_battery_replace": 4
+  },
+  "analog_inputs": {
+      "door_sensor": 1,
+      "5vdc_monitor": 2,
+      "28vdc_monitor": 3,
+      "15vdc_monitor": 4,
+      "24vdc_monitor": 5
   }
 
 }
