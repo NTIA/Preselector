@@ -99,19 +99,19 @@ Other Preselectors and WebRelays may require a different configuration.
 The `base_url` and `name` keys are the only required keys for the `WebRelayPreselector`.
 The `base_url` should map to the base URL to interact with the WebRelay
 (see [https://www.controlbyweb.com/x310](https://www.controlbyweb.com/x310)
-for more info). The keys within the control_states key should correspond to RF paths
-documented in the SigMF metadata. The keys within the status_states should map to the
+for more info). The keys within the `control_states` key should correspond to RF paths
+documented in the SigMF metadata. The keys within the `status_states` should map to the
 RF paths documented in the SigMF metadata, or to understandable states of the
 preselector for which it is desired to determine whether they are enabled or disabled.
-The status method of the preselector will provide each of the keys specified in the
-status_states entry mapped to a boolean indicating whether the preselector states match
+The `get_status` method of the preselector will provide each of the keys specified in the
+`status_states` entry mapped to a boolean indicating whether the preselector states match
 those specified in the mapping. Each of the entries in the config provide mappings to the
-associated web relay input states and every RFPath defined in the sensor definition json
+associated web relay input states and every `RFPath` defined in the sensor definition json
 file should have an entry in the preselector config.
 The `sensors`, `digital_inputs`, and `analog_inputs` keys define the sensors,
-digital_inputs and analog_inputs configured on the device. Within each of the sections,
+digital inputs and analog inputs configured on the device. Within each of the sections,
 each key provides the name of the sensor or input and the value specifies the assigned
-sensor or input number. The get_satus method will provide each sensor/input value with
+sensor or input number. The `get_satus` method will provide each sensor/input value with
 the specified label. Every status_state, sensor, and input must have a unique name.
 Attempting to create a`ControlByWebWebRelay` with duplicate status_states,
 sensors, or inputs will cause a `ConfigurationException.`
