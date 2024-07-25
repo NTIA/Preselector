@@ -1,9 +1,20 @@
 # NTIA/ITS Preselector API
 
-![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/NTIA/Preselector?display_name=tag&sort=semver)
-![GitHub all releases](https://img.shields.io/github/downloads/NTIA/Preselector/total)
-![GitHub issues](https://img.shields.io/github/issues/NTIA/Preselector)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![GitHub release (latest SemVer)][latest-release-semver-badge]][github-releases]
+[![GitHub Actions Test Status][github-actions-test-badge]][github-actions-tox-link]
+[![GitHub all releases][github-download-count-badge]][github-releases]
+[![GitHub issues][github-issue-count-badge]][github-issues]
+[![Code style: black][code-style-badge]][code-style-repo]
+
+[github-actions-tox-link]: https://github.com/NTIA/Preselector/actions/workflows/tox.yaml
+[github-actions-test-badge]: https://github.com/NTIA/Preselector/actions/workflows/tox.yaml/badge.svg
+[code-style-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
+[code-style-repo]: https://github.com/psf/black
+[latest-release-semver-badge]: https://img.shields.io/github/v/release/NTIA/Preselector?display_name=tag&sort=semver
+[github-releases]: https://github.com/NTIA/Preselector/releases
+[github-download-count-badge]: https://img.shields.io/github/downloads/NTIA/Preselector/total
+[github-issue-count-badge]: https://img.shields.io/github/issues/NTIA/Preselector
+[github-issues]: https://github.com/NTIA/Preselector/issues
 
 This repository provides a general software API to control preselectors regardless of their
 components and control mechanisms.
