@@ -207,4 +207,4 @@ See [LICENSE](LICENSE.md)
 
 ## Contact
 
-For technical questions, contact Doug Boulware, dboulware@ntia.gov
+For technical questions, contact <code@ntia.gov>
