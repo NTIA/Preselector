@@ -145,7 +145,7 @@ class Preselector(ABC):
             if preselector_filter:
                 return preselector_filter.frequency_low_stopband
             else:
-                raise ConfigurationException(f"Filger {filter_id} is None.")
+                raise ConfigurationException(f"Filter {filter_id} is None.")
         else:
             raise ConfigurationException(
                 "Unable to get frequency_low for the stopband filter. There is no RF_PATH named {path_name}".format(
