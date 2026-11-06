@@ -29,7 +29,7 @@ See below for additional details on using the `WebRelayPreselector`.
 
 This software will grow over time to support additional components and control mechanisms.
 
-## Table of Contents
+## Table of Contents 
 
 - [Introduction](#introduction)
 - [Usage](#usage)
