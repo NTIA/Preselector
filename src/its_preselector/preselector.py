@@ -103,7 +103,7 @@ class Preselector(ABC):
             if preselector_filter:
                 return preselector_filter.frequency_low_passband
             else:
-                raise ConfigurationException("Filter {id} is None.".format(id=filter))
+                raise ConfigurationException(f"Filter {filter} is None.")
         else:
             raise ConfigurationException(
                 "Unable to get frequency_low for the passband filter. There is no RF_PATH named {path_name}".format(
@@ -124,9 +124,7 @@ class Preselector(ABC):
             if preselector_filter:
                 return preselector_filter.frequency_high_passband
             else:
-                raise ConfigurationException(
-                    "Filter {id} is None.".format(id=filter_id)
-                )
+                raise ConfigurationException(f"Filter {filter_id} is None.")
         else:
             raise ConfigurationException(
                 "Unable to get frequency_high for the passband filter. There is no RF_PATH named {path_name}".format(
@@ -147,9 +145,7 @@ class Preselector(ABC):
             if preselector_filter:
                 return preselector_filter.frequency_low_stopband
             else:
-                raise ConfigurationException(
-                    "Filger {id} is None.".format(id=filter_id)
-                )
+                raise ConfigurationException(f"Filter {filter_id} is None.")
         else:
             raise ConfigurationException(
                 "Unable to get frequency_low for the stopband filter. There is no RF_PATH named {path_name}".format(
@@ -210,7 +206,7 @@ class Preselector(ABC):
             if amplifier:
                 return amplifier.noise_figure
             else:
-                raise ConfigurationException("Amplifier {id} is None".format(id=amp_id))
+                raise ConfigurationException(f"Amplifier {amp_id} is None")
         else:
             raise ConfigurationException(
                 "Unable to get amplifier noise figure. There is no RF_PATH named {path_name}".format(
@@ -232,7 +228,7 @@ class Preselector(ABC):
                 if f.filter_spec.id == filter_id:
                     return f
 
-        raise ConfigurationException("Filter {id} does not exist.".format(id=filter_id))
+        raise ConfigurationException(f"Filter {filter_id} does not exist.")
 
     def __get_amplifier(self, amp_id):
         if amp_id:
@@ -240,7 +236,7 @@ class Preselector(ABC):
                 if amp.amplifier_spec.id == amp_id:
                     return amp
 
-        raise ConfigurationException("Amplifier {id} does not exist.".format(id=amp_id))
+        raise ConfigurationException(f"Amplifier {amp_id} does not exist.")
 
     @abstractmethod
     def get_sensor_value(self, sensor) -> float:
